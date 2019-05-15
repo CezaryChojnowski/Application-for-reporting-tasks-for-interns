@@ -7,23 +7,32 @@
     <title>User List</title>
 </head>
 <body>
-<div layout:fragment="content" class="row">
-    <div class="col-xs-8 col-md-8">
+<div>
+    <div>
+        <h3>
+            <a href="/newUser"><span></span> Add user</a>
+        </h3>
         <h2>User List</h2>
-        <div class="table-responsive">
-            <table class="table" id="product-table">
+        <div>
+            <table>
                 <thead>
                 <tr>
                     <th>Login</th>
                     <th>Pass</th>
+                    <th>Active</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Role</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${user}">
-                    <td th:text="{user.login}"></td>
-                    <td th:text="{user.pass}"></td>
-                    <td></td>
-                    <td></td>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.login}"></td>
+                    <td th:text="${user.pass}"></td>
+                    <td th:text="${user.active}"></td>
+                    <td th:text="${user.contact.getPhone()}"></td>
+                    <td th:text="${user.contact.getEmail()}"></td>
+                    <td th:text="${#strings.arrayJoin(user.role,', ')}"></td>
                 </tr>
                 </tbody>
             </table>

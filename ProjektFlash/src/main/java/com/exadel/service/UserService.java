@@ -18,4 +18,20 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Contact createContact(String email, String phone){
+        return new Contact(email, phone);
+    }
+
+    public User createUser(String login, String pass, String email, String phone){
+        User user = new User();
+        user.setLogin(login);
+        user.setPass(pass);
+        user.setActive(true);
+        String[] role = {"user"};
+        //String asString = Arrays.toString(role);
+        user.setRole(role);
+        user.setContact(createContact(email,phone));
+        return userRepository.save(user);
+    }
+
 }

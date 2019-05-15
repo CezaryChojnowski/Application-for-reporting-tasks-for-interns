@@ -1,11 +1,7 @@
 package com.exadel.model;
 
-;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Setter
-@ToString
 @Document(collection = "user")
 public class User {
     private String _id;
