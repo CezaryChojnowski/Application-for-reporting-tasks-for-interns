@@ -1,5 +1,6 @@
 package com.exadel.service;
 
+import com.exadel.model.Contact;
 import com.exadel.model.User;
 import com.exadel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
