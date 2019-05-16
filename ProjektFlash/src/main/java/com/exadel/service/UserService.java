@@ -14,8 +14,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<User> findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
     public List<User> getAllUsers(){
         return userRepository.findAll();
+    }
+
+    public User getByLogin(String login){
+        return userRepository.findByLogin(login);
     }
 
     public Contact createContact(String email, String phone){
@@ -28,10 +36,8 @@ public class UserService {
         user.setPass(pass);
         user.setActive(true);
         String[] role = {"user"};
-        //String asString = Arrays.toString(role);
         user.setRole(role);
         user.setContact(createContact(email,phone));
         return userRepository.save(user);
     }
-
 }

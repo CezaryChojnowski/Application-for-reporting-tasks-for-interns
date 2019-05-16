@@ -15,6 +15,7 @@
                 <label>Login:</label>
                 <input type="text"name="login" />
             </div>
+            <p th:if="${loginError == true}">Login already in use</p>
             <div class="form-group">
                 <label>Pass:</label>
                 <input type="text" name="pass" />
@@ -27,6 +28,7 @@
                 <label>Email:</label>
                 <input type="text" name="email" />
             </div>
+            <p th:if="${emailError == true}">Email already in use</p>
             <button type="submit">Save</button>
         </form>
     </div>
