@@ -1,9 +1,15 @@
 package com.exadel.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Document(collection = "user")
-public class User {
+public class User implements UserDetails {
     private String _id;
     private String login;
     private String pass;
@@ -12,6 +18,16 @@ public class User {
     private Contact contact;
 
     public User() {
+    }
+
+    public User(String login, String pass) {
+    }
+
+    public User(String login, String pass, List<SimpleGrantedAuthority> authorities) {
+    }
+
+    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPass(), authorities);
     }
 
     public String getLogin() {
@@ -28,10 +44,6 @@ public class User {
 
     public void setPass(String pass) {
         this.pass = pass;
-    }
-
-    public boolean isActive() {
-        return active;
     }
 
     public void setActive(boolean active) {
@@ -52,5 +64,40 @@ public class User {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

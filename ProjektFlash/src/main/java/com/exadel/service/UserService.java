@@ -4,6 +4,7 @@ import com.exadel.model.Contact;
 import com.exadel.model.User;
 import com.exadel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> findByEmail(String email){
         return userRepository.findByEmail(email);
@@ -33,7 +37,7 @@ public class UserService {
     public User createUser(String login, String pass, String email, String phone){
         User user = new User();
         user.setLogin(login);
-        user.setPass(pass);
+        user.setPass(bCryptPasswordEncoder.encode(pass));
         user.setActive(true);
         String[] role = {"user"};
         user.setRole(role);

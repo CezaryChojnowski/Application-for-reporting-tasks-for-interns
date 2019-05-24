@@ -7,18 +7,21 @@
     <title>User List</title>
 </head>
 <body>
+<p align="right"><a href="/logout">Logout</a></p>
+<p align="right"><a href="/welcome">Welcome page</a></p>
 <div>
     <div>
-        <h3>
-            <a href="/newUser"><span></span> Add user</a>
-        </h3>
+        <!--<h3>-->
+            <!--<a href="/newUser"><span></span> Add user</a>-->
+        <!--</h3>-->
         <h2>User List</h2>
+        </td>
         <div>
             <table>
                 <thead>
                 <tr>
                     <th>Login</th>
-                    <th>Pass</th>
+                    <!--<th>Pass</th>-->
                     <th>Active</th>
                     <th>Phone</th>
                     <th>Email</th>
@@ -28,7 +31,7 @@
                 <tbody>
                 <tr th:each="user : ${users}">
                     <td th:text="${user.login}"></td>
-                    <td th:text="${user.pass}"></td>
+                    <!--<td th:text="${user.pass}"></td>-->
                     <td th:text="${user.active}"></td>
                     <td th:text="${user.contact.getPhone()}"></td>
                     <td th:text="${user.contact.getEmail()}"></td>

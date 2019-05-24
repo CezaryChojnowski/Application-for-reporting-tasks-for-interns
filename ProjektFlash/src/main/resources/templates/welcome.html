@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Hello</title>
+</head>
+
+<body>
+<p align="right"><a href="/logout">Logout</a></p>
+<p th:if="${fullName != null}">
+<p th:text="${login}"></p>
+</p>
+<a href="/getAllUsers">Show all users</a>
+</body>
+</html>

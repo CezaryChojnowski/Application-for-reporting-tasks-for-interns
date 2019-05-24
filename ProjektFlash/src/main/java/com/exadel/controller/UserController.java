@@ -3,6 +3,8 @@ package com.exadel.controller;
 import com.exadel.model.User;
 import com.exadel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,7 +35,7 @@ public class UserController {
             return new ModelAndView("redirect:/newUser", model);
         }
             userService.createUser(login, pass, phone, email);
-            return new ModelAndView("redirect:/getAllUsers");
+            return new ModelAndView("redirect:/login");
     }
 
     @RequestMapping("/getAllUsers")
@@ -57,5 +59,23 @@ public class UserController {
         }
         return true;
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+    public ModelAndView welcome() {
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getByLogin(authentication.getName());
+        modelAndView.addObject("login", "Welcome " + user.getLogin() + " | Phone: " + user.getContact().getPhone() + " | Email: " + user.getContact().getEmail());
+        modelAndView.setViewName("welcome");
+        return modelAndView;
+    }
+
 
 }
