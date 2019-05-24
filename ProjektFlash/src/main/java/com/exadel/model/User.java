@@ -30,6 +30,10 @@ public class User implements UserDetails {
         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPass(), authorities);
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
     public String getLogin() {
         return login;
     }
