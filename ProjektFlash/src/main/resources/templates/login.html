@@ -12,7 +12,7 @@
         <h2>Login User</h2>
         <form action="#" th:action="@{/login}" method="post">
             <div th:if="${param.error}">
-                Invalid email and password.
+                Invalid email and/or password.
             </div>
             <div th:if="${param.logout}">
                 You have been logged out.
