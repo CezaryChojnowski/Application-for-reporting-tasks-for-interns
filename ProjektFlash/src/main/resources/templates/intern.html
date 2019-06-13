@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Intern List</title>
+    <style>
+table, th, td {
+  border: 1px solid black;
+}
+    </style>
+</head>
+<body>
+<div>
+    <div>
+        <h2>Intern List</h2>
+        </td>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th>First name</th>
+                    <th>Surname
+                    <th>School</th>
+                    <th>Internship time</th>
+                    <th>Hours per week</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="intern : ${interns}">
+                    <td th:text="${intern.firstName}"></td>
+                    <td th:text="${intern.surname}"></td>
+                    <td th:text="${intern.school}"></td>
+                    <td th:text="${#strings.arrayJoin(intern.internshipTime,' - ')}"></td>
+                    <td th:text="${intern.hoursPerWeek}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

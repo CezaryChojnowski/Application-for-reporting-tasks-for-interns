@@ -1,9 +1,13 @@
 package com.exadel.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "intern")
 public class Intern {
     private String id;
     private String firstName;
     private String surname;
+    private String school;
     private String[] internshipTime;
     private int hoursPerWeek;
     private int totalHoursPerWeek;
@@ -13,11 +17,20 @@ public class Intern {
     public Intern() {
     }
 
-    public Intern(String firstName, String surname, String[] internshipTime, int hoursPerWeek) {
+    public Intern(String firstName, String surname, String school, String[] internshipTime, int hoursPerWeek) {
         this.firstName = firstName;
         this.surname = surname;
+        this.school = school;
         this.internshipTime = internshipTime;
         this.hoursPerWeek = hoursPerWeek;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
     }
 
     public String getId() {
