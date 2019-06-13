@@ -14,7 +14,7 @@ table, th, td {
 <body>
 <div>
     <div>
-        <h2>Intern List</h2>
+        <h2>Details</h2>
         </td>
         <div>
             <table>
@@ -25,17 +25,35 @@ table, th, td {
                     <th>School</th>
                     <th>Internship time</th>
                     <th>Hours per week</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="intern : ${interns}">
                     <td th:text="${intern.firstName}"></td>
                     <td th:text="${intern.surname}"></td>
                     <td th:text="${intern.school}"></td>
                     <td th:text="${#strings.arrayJoin(intern.internshipTime,' - ')}"></td>
                     <td th:text="${intern.hoursPerWeek}"></td>
-                    <td><a th:href="@{/details/{id}(id=${intern._id})}">Details</a></td>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Hours</th>
+                    <th>Task</th>
+                    <th>EK</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task : ${tasks}">
+                    <td th:text="${intern.task.getDate()}"></td>
+                    <td th:text="${intern.task.getHours()}"></td>
+                    <td th:text="${intern.task.getTasks()}"></td>
+                    <td th:text="${intern.task.getEK()}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -44,3 +62,4 @@ table, th, td {
 </div>
 </body>
 </html>
+

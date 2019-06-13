@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Create User</title>
+</head>
+<body>
+<div>
+    <div>
+        <form action="/createIntern">
+            <div>
+                <label>First name:</label>
+                <input type="text"name="firstName" />
+            </div>
+            <div class="form-group">
+                <label>Surname:</label>
+                <input type="text" name="surname" />
+            </div>
+            <div class="form-group">
+                <label>School:</label>
+                <input type="text" name="school" />
+            </div>
+            <div class="form-group">
+                <label>Date start YYYY-MM-DD:</label>
+                <input type="text" name="internshipTime[]" />
+            </div>
+            <div class="form-group">
+                <label>Date finish YYYY-MM-DD:</label>
+                <input type="text" name="internshipTime[]" />
+            </div>
+            <div class="form-group">
+                <label>Hours per week:</label>
+                <input type="text" name="hoursPerWeek" />
+            </div>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

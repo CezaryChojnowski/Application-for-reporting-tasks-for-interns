@@ -4,6 +4,7 @@ import com.exadel.model.Intern;
 import com.exadel.model.Task;
 import com.exadel.model.User;
 import com.exadel.repository.InternRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,14 @@ public class InternService {
 
     public List<Intern> getAllIntern(){
         return internRepository.findAll();
+    }
+
+    public Intern findByid(ObjectId id){
+        return internRepository.findByid(id);
+    }
+
+    public List<Task> findTasksByid(ObjectId id){
+        return internRepository.findTasksByid(id);
     }
 
     public Task createTask(String date, int hours, String task, String EK){

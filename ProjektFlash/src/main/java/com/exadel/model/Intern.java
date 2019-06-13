@@ -1,10 +1,11 @@
 package com.exadel.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "intern")
 public class Intern {
-    private String id;
+    private ObjectId _id;
     private String firstName;
     private String surname;
     private String school;
@@ -25,20 +26,20 @@ public class Intern {
         this.hoursPerWeek = hoursPerWeek;
     }
 
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id) {
+        this._id = _id;
+    }
+
     public String getSchool() {
         return school;
     }
 
     public void setSchool(String school) {
         this.school = school;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFirstName() {
