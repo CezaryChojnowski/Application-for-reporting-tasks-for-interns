@@ -11,6 +11,7 @@ table, th, td {
 }
     </style>
 </head>
+<p align="right"><a href="/getAllIntern">Back to interns list</a></p>
 <body>
 <div>
     <div>
@@ -50,10 +51,10 @@ table, th, td {
                 </thead>
                 <tbody>
                 <tr th:each="task : ${tasks}">
-                    <td th:text="${intern.task.getDate()}"></td>
-                    <td th:text="${intern.task.getHours()}"></td>
-                    <td th:text="${intern.task.getTasks()}"></td>
-                    <td th:text="${intern.task.getEK()}"></td>
+                    <td th:text="${task.getDate()}"></td>
+                    <td th:text="${task.getHours()}"></td>
+                    <td th:text="${task.getTask()}"></td>
+                    <td th:text="${task.getEK()}"></td>
                 </tr>
                 </tbody>
             </table>

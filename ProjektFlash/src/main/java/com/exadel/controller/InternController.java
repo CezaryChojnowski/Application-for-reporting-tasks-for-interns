@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -33,8 +34,8 @@ public class InternController {
         model.addAttribute("surname", surname);
         model.addAttribute("school", school);
         model.addAttribute("hoursPerWeek", hoursPerWeek);
-        model.addAttribute("internshipTime1", internshipTime[0]);
-        model.addAttribute("internshipTime2", internshipTime[1]);
+        model.addAttribute("internshipTime[]", internshipTime);
+//        model.addAttribute("internshipTime2", internshipTime[1]);
         internService.createIntern(firstName, surname, school, hoursPerWeek, internshipTime);
         return new ModelAndView("redirect:/getAllIntern");
     }
@@ -48,9 +49,9 @@ public class InternController {
     @RequestMapping(value="/details/{id}")
     public String details(@PathVariable("id") ObjectId id, Model model){
         Intern intern = internService.findByid(id);
-//        List<Task> tasks = internService.findTasksByid(id);
-//        System.out.println(id);
-//        System.out.println(tasks);
+        List<Task> tasks = Arrays.asList(intern.getTasks());
+        System.out.println(tasks);
+        model.addAttribute("tasks", tasks);
         model.addAttribute("intern", intern);
         return "details";
     }
