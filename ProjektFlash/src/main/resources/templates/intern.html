@@ -22,9 +22,9 @@ table, th, td {
                 <tr>
                     <th>First name</th>
                     <th>Surname</th>
-                    <th>School</th>
-                    <th>Internship time</th>
-                    <th>Hours per week</th>
+                   <!--  <th>School</th> -->
+                    <!-- <th>Internship time</th>-->
+                    <!-- <th>Hours per week</th>-->
                     <th></th>
                 </tr>
                 </thead>
@@ -32,9 +32,9 @@ table, th, td {
                 <tr th:each="intern : ${interns}">
                     <td th:text="${intern.firstName}"></td>
                     <td th:text="${intern.surname}"></td>
-                    <td th:text="${intern.school}"></td>
-                    <td th:text="${#strings.arrayJoin(intern.internshipTime,' - ')}"></td>
-                    <td th:text="${intern.hoursPerWeek}"></td>
+                    <!--  <td th:text="${intern.school}"></td>-->
+                    <!--  <td th:text="${#strings.arrayJoin(intern.internshipTime,' - ')}"></td>-->
+                    <!--  <td th:text="${intern.hoursPerWeek}"></td>-->
                     <td><a th:href="@{/details/{id}(id=${intern._id})}">Details</a></td>
                 </tr>
                 </tbody>

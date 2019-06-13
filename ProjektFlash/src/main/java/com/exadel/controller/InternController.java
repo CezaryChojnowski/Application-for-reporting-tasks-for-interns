@@ -47,13 +47,22 @@ public class InternController {
     }
 
     @RequestMapping(value="/details/{id}")
-    public String details(@PathVariable("id") ObjectId id, Model model){
+    public String details(@PathVariable("id") ObjectId id, Model model)throws  NullPointerException{
+        boolean check = true;
         Intern intern = internService.findByid(id);
-        List<Task> tasks = Arrays.asList(intern.getTasks());
-        System.out.println(tasks);
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("intern", intern);
-        return "details";
+        try{
+            List<Task> tasks = Arrays.asList(intern.getTasks());
+            model.addAttribute("tasks", tasks);
+        }catch (NullPointerException e){
+            check = false;
+            model.addAttribute("EmptyTasksList", check);
+        }
+        finally {
+            model.addAttribute("EmptyTasksList", check);
+            model.addAttribute("intern", intern);
+            return "details";
+        }
+
     }
 
 
