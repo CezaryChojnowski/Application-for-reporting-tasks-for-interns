@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Report task</title>
+</head>
+<body>
+<div>
+    <div>
+        <form action="/createTask">
+            <div>
+                <label>Date:</label>
+                <input type="text"name="date" />
+            </div>
+            <div class="form-group">
+                <label>Hours:</label>
+                <input type="text" name="hours" />
+            </div>
+            <div class="form-group">
+                <label>Task:</label>
+                <input type="text" name="task" />
+            </div>
+            <div class="form-group">
+                <label>EK:</label>
+                <input type="text" name="EK" />
+            </div>
+            <button type="submit">Report task</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

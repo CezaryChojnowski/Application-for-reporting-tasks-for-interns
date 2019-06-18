@@ -14,6 +14,9 @@ public class Task {
         this.EK = EK;
     }
 
+    public Task() {
+    }
+
     public String getDate() {
         return date;
     }

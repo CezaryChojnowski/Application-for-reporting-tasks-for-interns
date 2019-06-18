@@ -28,10 +28,6 @@ public class InternService {
         return internRepository.findTasksByid(id);
     }
 
-    public Task createTask(String date, int hours, String task, String EK){
-        return new Task(date,hours,task,EK);
-    }
-
     public Intern createIntern(String firstName, String surname, String school, int hoursPerWeek, String[] internshipTime){
         Intern intern = new Intern();
         intern.setFirstName(firstName);
