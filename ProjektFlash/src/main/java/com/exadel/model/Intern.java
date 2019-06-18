@@ -9,6 +9,8 @@ public class Intern {
     private String firstName;
     private String surname;
     private String school;
+    private String email;
+    private String role;
     private String[] internshipTime;
     private int hoursPerWeek;
     private int totalHoursPerWeek;
@@ -18,12 +20,29 @@ public class Intern {
     public Intern() {
     }
 
-    public Intern(String firstName, String surname, String school, String[] internshipTime, int hoursPerWeek) {
+    public Intern(String firstName, String surname, String school, String email, String[] internshipTime, int hoursPerWeek) {
         this.firstName = firstName;
         this.surname = surname;
         this.school = school;
+        this.email = email;
         this.internshipTime = internshipTime;
         this.hoursPerWeek = hoursPerWeek;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public ObjectId get_id() {

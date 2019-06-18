@@ -3,7 +3,6 @@ package com.exadel.controller;
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
 import com.exadel.service.InternService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,14 +28,14 @@ public class InternController {
     }
 
     @RequestMapping("/createIntern")
-    public ModelAndView createIntern(@RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") String[] internshipTime, ModelMap model){
+    public ModelAndView createIntern(@RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") String[] internshipTime, ModelMap model){
         model.addAttribute("firstName", firstName);
         model.addAttribute("surname", surname);
         model.addAttribute("school", school);
+        model.addAttribute("email", email);
         model.addAttribute("hoursPerWeek", hoursPerWeek);
         model.addAttribute("internshipTime[]", internshipTime);
-//        model.addAttribute("internshipTime2", internshipTime[1]);
-        internService.createIntern(firstName, surname, school, hoursPerWeek, internshipTime);
+        internService.createIntern(firstName, surname, school,email, hoursPerWeek, internshipTime);
         return new ModelAndView("redirect:/getAllIntern");
     }
 
@@ -46,10 +45,10 @@ public class InternController {
         return "intern";
     }
 
-    @RequestMapping(value="/details/{id}")
-    public String details(@PathVariable("id") ObjectId id, Model model)throws  NullPointerException{
+    @RequestMapping(value="/details/{email}")
+    public String details(@PathVariable("email") String email, Model model)throws  NullPointerException{
         boolean check = true;
-        Intern intern = internService.findByid(id);
+        Intern intern = internService.findTasksByEmail(email);
         try{
             List<Task> tasks = Arrays.asList(intern.getTasks());
             model.addAttribute("tasks", tasks);

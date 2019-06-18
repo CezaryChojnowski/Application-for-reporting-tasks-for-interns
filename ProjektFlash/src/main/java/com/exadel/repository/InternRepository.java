@@ -17,4 +17,7 @@ public interface InternRepository extends MongoRepository<Intern, String> {
     @Query("{ '_id': ?0 }")
     List<Task> findTasksByid(ObjectId id);
 
+    @Query(" { 'email': ?0}")
+    Intern findTasksByEmail(String email);
+
 }

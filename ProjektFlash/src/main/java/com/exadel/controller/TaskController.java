@@ -1,7 +1,7 @@
 package com.exadel.controller;
 
-import com.exadel.model.Intern;
 import com.exadel.model.Task;
+import com.exadel.service.InternService;
 import com.exadel.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,16 +18,17 @@ public class TaskController {
     private TaskService taskService;
 
     @RequestMapping("/newTask")
-    public String newIntern(Model model){
+    public String newTask(Model model){
         model.addAttribute("task", new Task());
         return "reportingTask.html";
     }
 
     @RequestMapping("/createTask")
-    public ModelAndView createIntern(@RequestParam String date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
+    public ModelAndView createTask(@RequestParam String date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
         model.addAttribute("date", date);
         model.addAttribute("hours", hours);
         model.addAttribute("task", task);
+        Task tempTask = new Task(date,hours,task,EK);
         taskService.createTask(date, hours, task, EK);
         return new ModelAndView("redirect:/getAllIntern");
     }
