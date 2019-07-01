@@ -4,41 +4,45 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="default">
 <head>
-    <title>Create intern</title>
+    <title>Edit intern</title>
 </head>
 <body>
 <div>
     <div>
-        <form action="/createIntern">
+        <form action="/updateIntern">
+            <div>
+                <label>id:</label>
+                <input type="text" name="_id" th:value="${intern._id}" readonly="readonly"/>
+            </div>
             <div>
                 <label>First name:</label>
-                <input type="text"name="firstName" />
+                <input type="text" name="firstName" th:value="${intern.firstName}" />
             </div>
             <div class="form-group">
                 <label>Surname:</label>
-                <input type="text" name="surname" />
+                <input type="text" name="surname" th:value="${intern.surname}"/>
             </div>
             <div class="form-group">
                 <label>School:</label>
-                <input type="text" name="school" />
+                <input type="text" name="school" th:value="${intern.school}"/>
             </div>
             <div class="form-group">
                 <label>Email:</label>
-                <input type="text" name="email" />
+                <input type="text" name="email" th:value="${intern.email}"/>
             </div>
             <div class="form-group">
                 <label>Date start YYYY-MM-DD:</label>
-                <input type="text" name="internshipTime[]" />
+                <input type="text" name="internshipTime[]" th:value="${intern.internshipTime[0]}"/>
             </div>
             <div class="form-group">
                 <label>Date finish YYYY-MM-DD:</label>
-                <input type="text" name="internshipTime[]" />
+                <input type="text" name="internshipTime[]" th:value="${intern.internshipTime[1]}"/>
             </div>
             <div class="form-group">
                 <label>Hours per week:</label>
-                <input type="text" name="hoursPerWeek" />
+                <input type="text" name="hoursPerWeek" th:value="${intern.hoursPerWeek}"/>
             </div>
-            <button type="submit">Add</button>
+            <button type="submit">Update</button>
         </form>
     </div>
 </div>

@@ -27,6 +27,7 @@ table, th, td {
                     <!-- <th>Hours per week</th>-->
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,6 +39,7 @@ table, th, td {
                     <!--  <td th:text="${intern.hoursPerWeek}"></td>-->
                     <td><a th:href="@{/details/{email}(email=${intern.email})}">Details</a></td>
                     <td><a th:href="@{/delete/{email}(email=${intern.email})}">Delete</a></td>
+                    <td><a th:href="@{/editIntern/{_id}(_id=${intern._id})}">Edit</a></td>
                 </tr>
                 </tbody>
             </table>

@@ -3,6 +3,7 @@ package com.exadel.controller;
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
 import com.exadel.service.InternService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,12 +66,30 @@ public class InternController {
 
     @RequestMapping("/delete/{email}")
     public ModelAndView delete(@PathVariable String email, Model model){
-        Intern intern = internService.findTasksByEmail(email);
+        Intern intern = internService.findInternByEmail(email);
         model.addAttribute("intern", intern);
         internService.delete(email);
         return new ModelAndView("redirect:/getAllIntern");
     }
 
+    @RequestMapping("/editIntern/{id}")
+    public String editIntern(@PathVariable ObjectId id, Model model){
+        Intern intern = internService.findByid(id);
+        model.addAttribute("intern", intern);
+        return "internEditForm.html";
+    }
+
+    @RequestMapping("/updateIntern")
+    public ModelAndView updateIntern(@RequestParam(required = false) ObjectId _id, @RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") String[] internshipTime, ModelMap model){
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("surname", surname);
+        model.addAttribute("school", school);
+        model.addAttribute("email", email);
+        model.addAttribute("hoursPerWeek", hoursPerWeek);
+        model.addAttribute("internshipTime[]", internshipTime);
+        internService.update(_id, firstName, surname, school, email, hoursPerWeek, internshipTime);
+        return new ModelAndView("redirect:/getAllIntern");
+    }
 
 
 }
