@@ -63,8 +63,10 @@ public class InternController {
         }
     }
 
-    @RequestMapping("/delete")
-    public ModelAndView delete(@RequestParam String email){
+    @RequestMapping("/delete/{email}")
+    public ModelAndView delete(@PathVariable String email, Model model){
+        Intern intern = internService.findTasksByEmail(email);
+        model.addAttribute("intern", intern);
         internService.delete(email);
         return new ModelAndView("redirect:/getAllIntern");
     }
