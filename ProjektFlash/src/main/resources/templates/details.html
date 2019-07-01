@@ -32,7 +32,7 @@ table, th, td {
                     <td th:text="${intern.firstName}"></td>
                     <td th:text="${intern.surname}"></td>
                     <td th:text="${intern.school}"></td>
-                    <td th:text="${#strings.arrayJoin(intern.internshipTime,' - ')}"></td>
+                    <td th:text="${#dates.listFormat(intern.internshipTime, 'dd.MM.yy')}"></td>
                     <td th:text="${intern.hoursPerWeek}"></td>
                 </tbody>
             </table>
@@ -50,7 +50,7 @@ table, th, td {
                 </thead>
                 <tbody>
                 <tr th:each="task : ${tasks}">
-                    <td th:text="${#dates.format(task.getDate(), 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${#dates.format(task.getDate(), 'dd.MM.yy')}"></td>
                     <td th:text="${task.getHours()}"></td>
                     <td th:text="${task.getTask()}"></td>
                     <td th:text="${task.getEK()}"></td>

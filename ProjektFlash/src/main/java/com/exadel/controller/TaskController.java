@@ -7,6 +7,7 @@ import com.exadel.service.InternService;
 import com.exadel.service.TaskService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
-import java.util.List;
 
 @Controller
 public class TaskController {
@@ -39,16 +39,11 @@ public class TaskController {
     }
 
     @RequestMapping("/createTask")
-    public ModelAndView createTask(@RequestParam(required = false) String email, @RequestParam Date date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
+    public ModelAndView createTask(@RequestParam(required = false) String email, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
         model.addAttribute("date", date);
         model.addAttribute("hours", hours);
         model.addAttribute("task", task);
         model.addAttribute("EK", EK);
-//        Intern intern = internService.findTasksByEmail("example@email.com"); //
-//        List<Task> tasks = intern.getTasks(); //
-//        tasks.add(taskService.createTask(date, hours, task, EK)); //
-//        intern.setTasks(tasks); //
-//        internRepository.save(intern);
         Task newTask = taskService.createTask(date, hours, task, EK); //
         System.out.println(email);
         internService.updateTasks(email, newTask);

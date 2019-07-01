@@ -5,6 +5,7 @@ import com.exadel.model.Task;
 import com.exadel.service.InternService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -29,7 +30,7 @@ public class InternController {
     }
 
     @RequestMapping("/createIntern")
-    public ModelAndView createIntern(@RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") Date[] internshipTime, ModelMap model){
+    public ModelAndView createIntern(@RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime, ModelMap model){
         model.addAttribute("firstName", firstName);
         model.addAttribute("surname", surname);
         model.addAttribute("school", school);
@@ -80,7 +81,7 @@ public class InternController {
     }
 
     @RequestMapping("/updateIntern")
-    public ModelAndView updateIntern(@RequestParam(required = false) ObjectId _id, @RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") Date[] internshipTime, ModelMap model){
+    public ModelAndView updateIntern(@RequestParam(required = false) ObjectId _id, @RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime, ModelMap model){
         model.addAttribute("firstName", firstName);
         model.addAttribute("surname", surname);
         model.addAttribute("school", school);
