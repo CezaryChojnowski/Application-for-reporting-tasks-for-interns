@@ -43,4 +43,9 @@ public class InternService {
         intern.setHoursPerWeek(hoursPerWeek);
         return internRepository.save(intern);
     }
+
+    public void delete(String email){
+        Intern intern = internRepository.findInternByEmail(email);
+        internRepository.delete(intern);
+    }
 }

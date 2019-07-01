@@ -61,7 +61,12 @@ public class InternController {
             model.addAttribute("intern", intern);
             return "details";
         }
+    }
 
+    @RequestMapping("/delete")
+    public ModelAndView delete(@RequestParam String email){
+        internService.delete(email);
+        return new ModelAndView("redirect:/getAllIntern");
     }
 
 
