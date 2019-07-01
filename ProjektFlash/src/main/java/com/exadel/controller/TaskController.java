@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -38,7 +39,7 @@ public class TaskController {
     }
 
     @RequestMapping("/createTask")
-    public ModelAndView createTask(@RequestParam(required = false) String email, @RequestParam String date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
+    public ModelAndView createTask(@RequestParam(required = false) String email, @RequestParam Date date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
         model.addAttribute("date", date);
         model.addAttribute("hours", hours);
         model.addAttribute("task", task);

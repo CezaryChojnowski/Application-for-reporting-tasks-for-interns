@@ -50,7 +50,7 @@ table, th, td {
                 </thead>
                 <tbody>
                 <tr th:each="task : ${tasks}">
-                    <td th:text="${task.getDate()}"></td>
+                    <td th:text="${#dates.format(task.getDate(), 'dd-MMM-yyyy')}"></td>
                     <td th:text="${task.getHours()}"></td>
                     <td th:text="${task.getTask()}"></td>
                     <td th:text="${task.getEK()}"></td>

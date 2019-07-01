@@ -3,6 +3,7 @@ package com.exadel.model;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "intern")
@@ -13,7 +14,7 @@ public class Intern {
     private String school;
     private String email;
     private String role;
-    private String[] internshipTime;
+    private Date[] internshipTime;
     private int hoursPerWeek;
     private int totalHoursPerWeek;
     private List<Task> tasks;
@@ -21,7 +22,7 @@ public class Intern {
     public Intern() {
     }
 
-    public Intern(String firstName, String surname, String school, String email, String[] internshipTime, int hoursPerWeek) {
+    public Intern(String firstName, String surname, String school, String email, Date[] internshipTime, int hoursPerWeek) {
         this.firstName = firstName;
         this.surname = surname;
         this.school = school;
@@ -87,11 +88,11 @@ public class Intern {
         this.surname = surname;
     }
 
-    public String[] getInternshipTime() {
+    public Date[] getInternshipTime() {
         return internshipTime;
     }
 
-    public void setInternshipTime(String[] internshipTime) {
+    public void setInternshipTime(Date[] internshipTime) {
         this.internshipTime = internshipTime;
     }
 

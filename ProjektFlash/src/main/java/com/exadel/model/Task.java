@@ -1,13 +1,15 @@
 package com.exadel.model;
 
 
+import java.util.Date;
+
 public class Task {
-    private String date;
+    private Date date;
     private int hours;
     private String task;
     private String EK;
 
-    public Task(String date, int hours, String task, String EK) {
+    public Task(Date date, int hours, String task, String EK) {
         this.date = date;
         this.hours = hours;
         this.task = task;
@@ -17,11 +19,11 @@ public class Task {
     public Task() {
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

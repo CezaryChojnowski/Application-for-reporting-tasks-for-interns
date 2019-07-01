@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,7 +37,7 @@ public class InternService {
         return internRepository.findTasksByid(id);
     }
 
-    public Intern createIntern(String firstName, String surname, String school, String email, int hoursPerWeek, String[] internshipTime){
+    public Intern createIntern(String firstName, String surname, String school, String email, int hoursPerWeek, Date[] internshipTime){
         Intern intern = new Intern();
         intern.setFirstName(firstName);
         intern.setSurname(surname);
@@ -53,7 +54,7 @@ public class InternService {
         internRepository.delete(intern);
     }
 
-    public Intern update(ObjectId _id, String firstName, String surname, String school, String email, int hoursPerWeek, String[] internshipTime){
+    public Intern update(ObjectId _id, String firstName, String surname, String school, String email, int hoursPerWeek, Date[] internshipTime){
         Intern intern = internRepository.findByid(_id);
         intern.set_id(_id);
         intern.setFirstName(firstName);
