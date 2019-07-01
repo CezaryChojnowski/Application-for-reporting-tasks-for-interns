@@ -5,7 +5,6 @@ import com.exadel.model.Task;
 import com.exadel.repository.InternRepository;
 import com.exadel.service.InternService;
 import com.exadel.service.TaskService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,9 +25,6 @@ public class TaskController {
 
     @Autowired
     private InternService internService;
-
-    @Autowired
-    private InternRepository internRepository;
 
     @RequestMapping("/newTask/{email}")
     public String newTask(@PathVariable("email") String email, Model model){

@@ -2,12 +2,12 @@ package com.exadel.service;
 
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
-import com.exadel.model.User;
 import com.exadel.repository.InternRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +46,8 @@ public class InternService {
         intern.setRole("intern");
         intern.setInternshipTime(internshipTime);
         intern.setHoursPerWeek(hoursPerWeek);
+        List<Task> emptyTasksList = new ArrayList<Task>();
+        intern.setTasks(emptyTasksList);
         return internRepository.save(intern);
     }
 
@@ -70,10 +72,8 @@ public class InternService {
     public Intern updateTasks(String email, Task task){
         Intern intern = findTasksByEmail(email);
         List<Task> tasks = intern.getTasks();
-        tasks.add(task); //
-        intern.setTasks(tasks); //
+        tasks.add(task);
+        intern.setTasks(tasks);
         return internRepository.save(intern);
     }
-
-
 }
