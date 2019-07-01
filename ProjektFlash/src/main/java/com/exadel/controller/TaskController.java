@@ -2,6 +2,7 @@ package com.exadel.controller;
 
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
+import com.exadel.repository.InternRepository;
 import com.exadel.service.InternService;
 import com.exadel.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -25,24 +25,30 @@ public class TaskController {
     @Autowired
     private InternService internService;
 
-    @RequestMapping("/newTask")
-    public String newTask(Model model){
+    @Autowired
+    private InternRepository internRepository;
+
+    @RequestMapping("/newTask/{email}")
+    public String newTask(@PathVariable("email") String email, Model model){
+        Intern intern = internService.findInternByEmail(email);
         model.addAttribute("task", new Task());
+        model.addAttribute("intern", intern);
         return "reportingTask.html";
     }
 
-    @RequestMapping(value="/createTask/{email}")
-    public ModelAndView createTask(@PathVariable("email") String email, @RequestParam String date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
+    @RequestMapping("/createTask")
+    public ModelAndView createTask(@RequestParam String date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
         model.addAttribute("date", date);
         model.addAttribute("hours", hours);
         model.addAttribute("task", task);
-        Intern intern = internService.findTasksByEmail(email);
-        List<Task> tasks = Arrays.asList(intern.getTasks());
-        Task tempTask = taskService.createTask(date, hours, task, EK);
-        tasks.add(tempTask);
-        Object[] array = tasks.toArray();
-        intern.setTasks((Task[]) array);
-        return new ModelAndView("redirect:/details" + intern.getEmail());
+        model.addAttribute("EK", EK);
+        Intern intern = internService.findTasksByEmail("example@email.com"); //
+        List<Task> tasks = intern.getTasks(); //
+        tasks.add(taskService.createTask(date, hours, task, EK)); //
+        intern.setTasks(tasks); //
+        internRepository.save(intern);
+        return new ModelAndView("redirect:/details/" + intern.getEmail());
     }
 }
+
 

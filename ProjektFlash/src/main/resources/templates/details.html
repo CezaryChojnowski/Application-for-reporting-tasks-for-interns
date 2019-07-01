@@ -58,7 +58,7 @@ table, th, td {
                 </tbody>
             </table>
         </div>
-        <p><a th:href="@{/newTask}">New task</a></p>
+        <p><a th:href="@{/newTask/{_id}(email=${intern.email})}">New task</a></p>
     </div>
 </div>
 </body>

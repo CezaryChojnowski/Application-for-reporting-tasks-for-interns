@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -51,7 +50,7 @@ public class InternController {
         boolean check = true;
         Intern intern = internService.findTasksByEmail(email);
         try{
-            List<Task> tasks = Arrays.asList(intern.getTasks());
+            List<Task> tasks = intern.getTasks();
             model.addAttribute("tasks", tasks);
         }catch (NullPointerException e){
             check = false;
