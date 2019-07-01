@@ -66,5 +66,13 @@ public class InternService {
         return internRepository.save(intern);
     }
 
+    public Intern updateTasks(String email, Task task){
+        Intern intern = findTasksByEmail(email);
+        List<Task> tasks = intern.getTasks();
+        tasks.add(task); //
+        intern.setTasks(tasks); //
+        return internRepository.save(intern);
+    }
+
 
 }

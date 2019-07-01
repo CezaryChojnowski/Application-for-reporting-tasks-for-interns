@@ -11,6 +11,10 @@
     <div>
         <form action="/createTask">
             <div>
+                <label>Email:</label>
+                <input type="text" name="email" th:value="${intern.email}" readonly="readonly"/>
+            </div>
+            <div>
                 <label>Date:</label>
                 <input type="text"name="date" />
             </div>
