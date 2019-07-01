@@ -81,7 +81,7 @@ public class InternController {
     }
 
     @RequestMapping("/updateIntern")
-    public ModelAndView updateIntern(@RequestParam(required = false) ObjectId _id, @RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime, ModelMap model){
+    public ModelAndView updateIntern(@RequestParam(required = false) ObjectId _id, @RequestParam String firstName, @RequestParam String surname, @RequestParam String school, @RequestParam String email, @RequestParam int hoursPerWeek, @RequestParam(value="internshipTime[]") @DateTimeFormat(pattern = "yyyy-MM-ddy") Date[] internshipTime, ModelMap model){
         model.addAttribute("firstName", firstName);
         model.addAttribute("surname", surname);
         model.addAttribute("school", school);
