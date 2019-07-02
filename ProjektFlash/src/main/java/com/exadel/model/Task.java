@@ -1,15 +1,23 @@
 package com.exadel.model;
 
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
 public class Task {
+    @Id
+    private ObjectId _id;
     private Date date;
     private int hours;
     private String task;
     private String EK;
 
     public Task(Date date, int hours, String task, String EK) {
+        ObjectId _id = new ObjectId();
+        this._id=_id;
         this.date = date;
         this.hours = hours;
         this.task = task;
@@ -17,6 +25,14 @@ public class Task {
     }
 
     public Task() {
+    }
+
+    public ObjectId get_idTask() {
+        return _id;
+    }
+
+    public void set_idTask(ObjectId _id) {
+        this._id = _id;
     }
 
     public Date getDate() {

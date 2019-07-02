@@ -46,6 +46,7 @@ table, th, td {
                     <th>Hours</th>
                     <th>Task</th>
                     <th>EK</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,7 @@ table, th, td {
                     <td th:text="${task.getHours()}"></td>
                     <td th:text="${task.getTask()}"></td>
                     <td th:text="${task.getEK()}"></td>
+                    <td><a th:href="@{/deleteTask/{email}/{_idTask}(_idTask=${task.get_idTask()}, email=${intern.email})}">Delete</a></td>
                 </tr>
                 </tbody>
             </table>

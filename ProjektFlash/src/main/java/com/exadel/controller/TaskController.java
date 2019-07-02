@@ -2,9 +2,9 @@ package com.exadel.controller;
 
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
-import com.exadel.repository.InternRepository;
 import com.exadel.service.InternService;
 import com.exadel.service.TaskService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -41,8 +41,15 @@ public class TaskController {
         model.addAttribute("task", task);
         model.addAttribute("EK", EK);
         Task newTask = taskService.createTask(date, hours, task, EK); //
-        System.out.println(email);
-        internService.updateTasks(email, newTask);
+        internService.addTask(email, newTask);
+        return new ModelAndView("redirect:/details/" + email);
+    }
+
+    @RequestMapping("/deleteTask/{email}/{_idTask}")
+    public ModelAndView deleteTask(@PathVariable("email") String email, @PathVariable("_idTask") ObjectId _idTask, Model model){
+        Intern intern = internService.findInternByEmail(email);
+        model.addAttribute("intern", intern);
+        internService.deleteTask(email, _idTask);
         return new ModelAndView("redirect:/details/" + email);
     }
 }

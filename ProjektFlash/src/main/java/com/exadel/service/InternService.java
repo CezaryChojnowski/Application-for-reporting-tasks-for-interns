@@ -69,11 +69,24 @@ public class InternService {
         return internRepository.save(intern);
     }
 
-    public Intern updateTasks(String email, Task task){
+    public Intern addTask(String email, Task task){
         Intern intern = findTasksByEmail(email);
         List<Task> tasks = intern.getTasks();
         tasks.add(task);
         intern.setTasks(tasks);
+        return internRepository.save(intern);
+    }
+
+    public Intern deleteTask(String email, ObjectId _idTask){
+        Intern intern = findTasksByEmail(email);
+        List<Task> tasks = intern.getTasks();
+        for (Task t: tasks) {
+            if(t.get_idTask().equals(_idTask)){
+                tasks.remove(t);
+                intern.setTasks(tasks);
+                break;
+            }
+        }
         return internRepository.save(intern);
     }
 }
