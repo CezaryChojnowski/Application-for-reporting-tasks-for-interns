@@ -38,12 +38,6 @@ public class InternController {
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
                                      ModelMap model){
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("surname", surname);
-        model.addAttribute("school", school);
-        model.addAttribute("email", email);
-        model.addAttribute("hoursPerWeek", hoursPerWeek);
-        model.addAttribute("internshipTime[]", internshipTime);
         internService.createIntern(firstName, surname, school,email, hoursPerWeek, internshipTime);
         return new ModelAndView("redirect:/getAllIntern");
     }
@@ -98,15 +92,32 @@ public class InternController {
                                      @RequestParam String email,
                                      @RequestParam int hoursPerWeek,
                                      @RequestParam(value="internshipTime[]")
-                                     @DateTimeFormat(pattern = "yyyy-MM-ddy") Date[] internshipTime,
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
                                      ModelMap model){
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("surname", surname);
-        model.addAttribute("school", school);
-        model.addAttribute("email", email);
-        model.addAttribute("hoursPerWeek", hoursPerWeek);
-        model.addAttribute("internshipTime[]", internshipTime);
         internService.update(_id, firstName, surname, school, email, hoursPerWeek, internshipTime);
         return new ModelAndView("redirect:/getAllIntern");
     }
+
+    @RequestMapping("/preReport/{email}")
+    public String report(@PathVariable("email") String email, Model model){
+        Intern intern = internService.findInternByEmail(email);
+        model.addAttribute("intern", intern);
+        return "reportForm";
+    }
+
+    @RequestMapping("/report")
+    public String preReport(@RequestParam("email") String email,
+                          @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                          @RequestParam(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate,
+                           Model model){
+        List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
+        System.out.println(taskResult.isEmpty());
+        for (Task t: taskResult
+             ) { System.out.println(t.getTask());
+
+        }
+        model.addAttribute("taskResult", taskResult);
+        return "reportTaskBeetwenTwoDates";
+    }
+
 }

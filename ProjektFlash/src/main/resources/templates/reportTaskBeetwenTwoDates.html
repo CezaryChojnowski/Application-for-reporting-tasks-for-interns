@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Raport</title>
+    <style>
+table, th, td {
+  border: 1px solid black;
+}
+    </style>
+</head>
+    <body>
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Hours</th>
+                    <th>Task</th>
+                    <th>EK</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task : ${taskResult}">
+                    <td th:text="${#dates.format(task.getDate(), 'dd.MM.yyyy')}"></td>
+                    <td th:text="${task.getHours()}"></td>
+                    <td th:text="${task.getTask()}"></td>
+                    <td th:text="${task.getEK()}"></td>
+                </tr>
+                </tbody>
+            </table>
+    </body>
+</html>

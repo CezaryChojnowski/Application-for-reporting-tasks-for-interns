@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Report task</title>
+</head>
+<body>
+<div>
+    <div>
+    <form action="/report">
+    <div>
+    <p>Report of work in defined week</p>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="text" name="email" th:value="${intern.email}" readonly="readonly"/>
+            </div>
+            <div class="form-group">
+                <label>Date internship start:</label>
+                <input type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}" readonly="readonly"/>
+            </div>
+            <div class="form-group">
+                <label>Date internship finish:</label>
+                <input type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}" readonly="readonly"/>
+            </div>
+            <div class="form-group">
+                <label>Date start:</label>
+                <input type="date" name="startDate"/>
+            </div>
+            <div class="form-group">
+                <label>Date finish:</label>
+                <input type="date" name="finishDate"/>
+            </div>
+            <button type="submit">Report</button>
+    </div>
+    </form>
+    </div>
+</div>
+</body>
+</html>

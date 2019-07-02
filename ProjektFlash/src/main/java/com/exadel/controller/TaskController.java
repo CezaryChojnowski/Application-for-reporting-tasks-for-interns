@@ -41,10 +41,6 @@ public class TaskController {
                                    @RequestParam int hours,
                                    @RequestParam String task,
                                    @RequestParam String EK, ModelMap model){
-        model.addAttribute("date", date);
-        model.addAttribute("hours", hours);
-        model.addAttribute("task", task);
-        model.addAttribute("EK", EK);
         Task newTask = taskService.createTask(date, hours, task, EK); //
         internService.addTask(email, newTask);
         return new ModelAndView("redirect:/details/" + email);
@@ -77,14 +73,7 @@ public class TaskController {
                                      @RequestParam(value="date")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                      @RequestParam int hours, @RequestParam String task,
-                                     @RequestParam String EK, ModelMap model){
-        model.addAttribute("_idTask", _idTask);
-        model.addAttribute("date", date);
-        model.addAttribute("hours", hours);
-        model.addAttribute("task", task);
-        model.addAttribute("EK", EK);
-        System.out.println(email);
-        System.out.println(_idTask);
+                                     @RequestParam String EK){
         internService.updateTask(email, _idTask, date, hours, task, EK);
         return new ModelAndView("redirect:/details/" + email);
     }

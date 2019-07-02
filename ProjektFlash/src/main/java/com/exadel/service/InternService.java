@@ -117,4 +117,16 @@ public class InternService {
         }
         return null;
     }
+
+    public List<Task> findTasksBeetwenTwoDates(String email, Date startdate, Date finishdate){
+        Intern intern = findTasksByEmail(email);
+        List<Task> tasks = intern.getTasks();
+        List<Task> taskRestult = new ArrayList<Task>();
+        for (Task t: tasks) {
+            if(t.getDate().after(startdate) && t.getDate().before(finishdate)){
+                taskRestult.add(t);
+            }
+        }
+        return taskRestult;
+    }
 }
