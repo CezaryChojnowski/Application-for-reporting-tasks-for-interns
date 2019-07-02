@@ -109,15 +109,18 @@ public class InternController {
     public String preReport(@RequestParam("email") String email,
                           @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                           @RequestParam(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate,
-                           Model model){
-        List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
-        System.out.println(taskResult.isEmpty());
-        for (Task t: taskResult
-             ) { System.out.println(t.getTask());
+                           Model model) throws  NullPointerException{
+        try{
+            List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
+            for (Task t: taskResult
+            ) { System.out.println(t.getTask());
 
+            }
+            model.addAttribute("taskResult", taskResult);
+            return "reportTaskBeetwenTwoDates";
+        }catch (NullPointerException e){
+            return "redirect:/preReport/" + email;
         }
-        model.addAttribute("taskResult", taskResult);
-        return "reportTaskBeetwenTwoDates";
     }
 
 }
