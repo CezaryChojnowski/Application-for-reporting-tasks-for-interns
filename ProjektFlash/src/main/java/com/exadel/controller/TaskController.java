@@ -27,7 +27,8 @@ public class TaskController {
     private InternService internService;
 
     @RequestMapping("/newTask/{email}")
-    public String newTask(@PathVariable("email") String email, Model model){
+    public String newTask(@PathVariable("email") String email,
+                          Model model){
         Intern intern = internService.findInternByEmail(email);
         model.addAttribute("task", new Task());
         model.addAttribute("intern", intern);
@@ -35,7 +36,11 @@ public class TaskController {
     }
 
     @RequestMapping("/createTask")
-    public ModelAndView createTask(@RequestParam(required = false) String email, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, @RequestParam int hours, @RequestParam String task, @RequestParam String EK, ModelMap model){
+    public ModelAndView createTask(@RequestParam(required = false) String email,
+                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                                   @RequestParam int hours,
+                                   @RequestParam String task,
+                                   @RequestParam String EK, ModelMap model){
         model.addAttribute("date", date);
         model.addAttribute("hours", hours);
         model.addAttribute("task", task);
@@ -46,10 +51,41 @@ public class TaskController {
     }
 
     @RequestMapping("/deleteTask/{email}/{_idTask}")
-    public ModelAndView deleteTask(@PathVariable("email") String email, @PathVariable("_idTask") ObjectId _idTask, Model model){
+    public ModelAndView deleteTask(@PathVariable("email") String email,
+                                   @PathVariable("_idTask") ObjectId _idTask, Model model){
         Intern intern = internService.findInternByEmail(email);
         model.addAttribute("intern", intern);
         internService.deleteTask(email, _idTask);
+        return new ModelAndView("redirect:/details/" + email);
+    }
+
+    @RequestMapping("/editTask/{email}/{_idTask}")
+    public String editIntern(@PathVariable String email,
+                             @PathVariable ObjectId _idTask,
+                             Model model){
+        Intern intern = internService.findInternByEmail(email);
+        Task task = internService.findTask(email, _idTask);
+        model.addAttribute("intern", intern);
+        model.addAttribute("task", task);
+        System.out.println(_idTask);
+        return "taskEdit.html";
+    }
+
+    @RequestMapping("/updateTask")
+    public ModelAndView updateIntern(@RequestParam(required = false) String email,
+                                     @RequestParam(required = false) ObjectId _idTask,
+                                     @RequestParam(value="date")
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                                     @RequestParam int hours, @RequestParam String task,
+                                     @RequestParam String EK, ModelMap model){
+        model.addAttribute("_idTask", _idTask);
+        model.addAttribute("date", date);
+        model.addAttribute("hours", hours);
+        model.addAttribute("task", task);
+        model.addAttribute("EK", EK);
+        System.out.println(email);
+        System.out.println(_idTask);
+        internService.updateTask(email, _idTask, date, hours, task, EK);
         return new ModelAndView("redirect:/details/" + email);
     }
 }

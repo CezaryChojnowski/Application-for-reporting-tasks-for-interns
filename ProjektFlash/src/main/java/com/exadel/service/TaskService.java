@@ -21,9 +21,4 @@ public class TaskService {
     public Task findByid(ObjectId _idTask){
         return taskRepository.findTaskByid(_idTask);
     }
-
-    public void delete(ObjectId _idTask){
-        Task task = taskRepository.findTaskByid(_idTask);
-        taskRepository.delete(task);
-    }
 }

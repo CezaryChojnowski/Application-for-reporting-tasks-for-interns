@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Edit task</title>
+</head>
+<body>
+<div>
+    <div>
+        <form action="/updateTask">
+            <div>
+                <label>Email:</label>
+                <a th:text="${intern.email}" readonly="readonly"</a>
+            </div>
+            <div class="form-group">
+                <label>ID Task:</label>
+                <a th:text="${task._idTask}" readonly="readonly"</a>
+            </div>
+            <div>
+                <label>Date:</label>
+                <input type="date" name="date" th:value="${#dates.format(task.date, 'yyyy-MM-dd')}"/>
+            </div>
+            <div class="form-group">
+                <label>Hours:</label>
+                <input type="number" name="hours" th:value="${task.hours}" />
+            </div>
+            <div class="form-group">
+                <label>Task:</label>
+                <input type="text" name="task" th:value="${task.task}" />
+            </div>
+            <div class="form-group">
+                <label>EK:</label>
+                <input type="text" name="EK" th:value="${task.EK}"/>
+            </div>
+            <br>
+            <button type="submit">Edit task</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

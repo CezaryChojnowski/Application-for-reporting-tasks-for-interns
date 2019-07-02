@@ -12,7 +12,7 @@
         <form action="/updateIntern">
             <div>
                 <label>id:</label>
-                <input type="text" name="_id" th:value="${intern._id}" readonly="readonly"/>
+                <a th:text="${intern._id}" readonly="readonly"</a>
             </div>
             <div>
                 <label>First name:</label>
