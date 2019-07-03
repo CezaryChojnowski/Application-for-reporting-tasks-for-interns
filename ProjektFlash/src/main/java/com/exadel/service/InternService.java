@@ -153,8 +153,17 @@ public class InternService {
     }
 
     public boolean checkIfTheTaskIsInTheRange(Date dateTask, Date[] internshipTime){
+        internshipTime[0] = subtractDays(internshipTime[0], 1);
+        internshipTime[1] = addDays(internshipTime[1], 1);
         if(dateTask.after(internshipTime[0]) && dateTask.before(internshipTime[1])){
            return true;
+        }
+        return false;
+    }
+
+    public boolean checkIfTheTimeIsInTheLimit(int workTime){
+        if(workTime <=8 && workTime >=1){
+            return true;
         }
         return false;
     }

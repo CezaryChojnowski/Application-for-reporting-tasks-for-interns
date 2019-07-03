@@ -40,7 +40,9 @@ public class TaskController {
                                    @RequestParam String task,
                                    @RequestParam String EK){
             Intern intern = internService.findInternByEmail(email);
-            if(!internService.checkIfTheTaskIsInTheRange(date, intern.getInternshipTime())){
+            boolean checkIfTheTaskIsInTheRange = internService.checkIfTheTaskIsInTheRange(date, intern.getInternshipTime());
+            boolean checkIfTheTimeIsInTheLimit = internService.checkIfTheTimeIsInTheLimit(hours);
+            if((checkIfTheTaskIsInTheRange==false) || (checkIfTheTimeIsInTheLimit==false)){
                 return new ModelAndView("redirect:/newTask/" + email);
             }
             Task newTask = taskService.createTask(date, hours, task, EK);
