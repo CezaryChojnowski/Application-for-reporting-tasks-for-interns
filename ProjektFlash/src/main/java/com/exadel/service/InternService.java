@@ -129,6 +129,12 @@ public class InternService {
         }
         return taskRestult;
     }
+    public boolean checkCorrectRange(Date startDate, Date finishDate){
+        if(startDate.after(finishDate)){
+            return false;
+        }
+        return true;
+    }
 
     public static Date addDays(Date date, int days) {
         GregorianCalendar cal = new GregorianCalendar();

@@ -115,7 +115,7 @@ public class InternController {
                           @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                           @RequestParam(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate,
                            Model model) throws  NullPointerException{
-        boolean check = internService.checkCorrectRange(startDate,finishDate);
+        boolean checkCorrectRange = internService.checkCorrectRange(startDate,finishDate);
         int totalHourseInTheRange = 0;
         try{
             List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
@@ -124,6 +124,9 @@ public class InternController {
             }
             model.addAttribute("totalHourseInTheRange", totalHourseInTheRange);
             model.addAttribute("taskResult", taskResult);
+            if(!checkCorrectRange){
+                return "redirect:/preReport/" + email;
+            }
             return "reportTaskBeetwenTwoDates";
         }catch (NullPointerException e){
             return "redirect:/preReport/" + email;
