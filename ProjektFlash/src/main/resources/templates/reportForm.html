@@ -24,6 +24,9 @@
                 <label>Date internship finish:</label>
                 <input type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}" readonly="readonly"/>
             </div>
+            <div th:if="${check==false}">
+                Incorrect range
+            </div>
             <div class="form-group">
                 <label>Date start:</label>
                 <input type="date" name="startDate"/>

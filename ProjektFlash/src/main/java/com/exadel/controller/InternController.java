@@ -111,18 +111,19 @@ public class InternController {
         return new ModelAndView("redirect:/getAllIntern");
     }
 
-    @RequestMapping("/preReport/{email}")
-    public String report(@PathVariable("email") String email, Model model){
+    @RequestMapping("/preReport/{email}/{check}")
+    public String report(@PathVariable("email") String email, @PathVariable boolean check, Model model){
         Intern intern = internService.findInternByEmail(email);
         model.addAttribute("intern", intern);
+        model.addAttribute("check", check);
         return "reportForm";
     }
 
     @RequestMapping("/report")
     public String preReport(@RequestParam("email") String email,
-                          @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                          @RequestParam(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate,
-                           Model model) throws  NullPointerException{
+                            @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                            @RequestParam(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate,
+                            Model model) throws  NullPointerException{
         boolean checkCorrectRange = internService.checkCorrectRange(startDate,finishDate);
         int totalHourseInTheRange = 0;
         try{
@@ -133,7 +134,7 @@ public class InternController {
             model.addAttribute("totalHourseInTheRange", totalHourseInTheRange);
             model.addAttribute("taskResult", taskResult);
             if(!checkCorrectRange){
-                return "redirect:/preReport/" + email;
+                return "redirect:/preReport/" + email +"/" + checkCorrectRange;
             }
             return "reportTaskBeetwenTwoDates";
         }catch (NullPointerException e){
