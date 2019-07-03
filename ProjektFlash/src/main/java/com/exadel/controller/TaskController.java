@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +39,10 @@ public class TaskController {
                                    @RequestParam int hours,
                                    @RequestParam String task,
                                    @RequestParam String EK){
+            Intern intern = internService.findInternByEmail(email);
+            if(!internService.checkIfTheTaskIsInTheRange(date, intern.getInternshipTime())){
+                return new ModelAndView("redirect:/newTask/" + email);
+            }
             Task newTask = taskService.createTask(date, hours, task, EK);
             internService.addTask(email, newTask);
             return new ModelAndView("redirect:/details/" + email);

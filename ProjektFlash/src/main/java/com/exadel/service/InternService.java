@@ -152,6 +152,13 @@ public class InternService {
         return cal.getTime();
     }
 
+    public boolean checkIfTheTaskIsInTheRange(Date dateTask, Date[] internshipTime){
+        if(dateTask.after(internshipTime[0]) && dateTask.before(internshipTime[1])){
+           return true;
+        }
+        return false;
+    }
+
     public boolean checkIfTheEmailIsUnique(String email){
         if(internRepository.findInternByEmail(email)==null){
             return true;
