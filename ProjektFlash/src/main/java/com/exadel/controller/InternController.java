@@ -23,13 +23,13 @@ public class InternController {
     @Autowired
     InternService internService;
 
-    @RequestMapping("/newIntern")
+    @RequestMapping(value="/newIntern")
     public String newIntern(Model model){
         model.addAttribute("intern", new Intern());
         return "internform.html";
     }
 
-    @RequestMapping("/createIntern")
+    @RequestMapping(value="/createIntern")
     public ModelAndView createIntern(@RequestParam String firstName,
                                      @RequestParam String surname,
                                      @RequestParam String school,
@@ -38,7 +38,11 @@ public class InternController {
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
                                      ModelMap model){
+        boolean checkCorrectRange = internService.checkCorrectRange(internshipTime[0],internshipTime[1]);
         if(internService.checkIfTheEmailIsUnique(email)==false){
+            return new ModelAndView("redirect:/newIntern");
+        }
+        if(!checkCorrectRange){
             return new ModelAndView("redirect:/newIntern");
         }
         internService.createIntern(firstName, surname, school,email, hoursPerWeek, internshipTime);
