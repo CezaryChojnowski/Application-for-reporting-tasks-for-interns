@@ -57,18 +57,19 @@ public class InternController {
         boolean check = true;
         Intern intern = internService.findTasksByEmail(email);
         int totalHourse = 0;
+        List<Task> tasks = intern.getTasks();
         try{
-            List<Task> tasks = intern.getTasks();
             for (Task t: tasks) {
                 totalHourse = totalHourse + t.getHours();
             }
             model.addAttribute("tasks", tasks);
             model.addAttribute("totalHourse", totalHourse);
-        }catch (NullPointerException e){
-            check = false;
-            model.addAttribute("EmptyTasksList", check);
         }
         finally {
+            if(tasks.isEmpty()){
+                check = false;
+                model.addAttribute("EmptyTasksList", check);
+            }
             model.addAttribute("EmptyTasksList", check);
             model.addAttribute("intern", intern);
             return "details";
