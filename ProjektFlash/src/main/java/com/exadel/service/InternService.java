@@ -145,5 +145,4 @@ public class InternService {
 
         return cal.getTime();
     }
-
 }

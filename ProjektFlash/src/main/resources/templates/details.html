@@ -60,8 +60,12 @@ table, th, td {
                     <td><a th:href="@{/editTask/{email}/{_idTask}(_idTask=${task.get_idTask()}, email=${intern.email})}">Edit</a></td>
                 </tr>
                 </tbody>
+                <td>Total: </td>
+                <td th:text="${totalHourse}"></td>
             </table>
         </div>
+
+
         <p><a th:href="@{/newTask/{email}(email=${intern.email})}">New task</a></p>
         <p><a th:href="@{/preReport/{email}/(email=${intern.email})}">Raport</a></p>
     </div>

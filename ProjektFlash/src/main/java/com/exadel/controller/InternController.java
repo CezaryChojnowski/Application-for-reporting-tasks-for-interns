@@ -53,9 +53,14 @@ public class InternController {
                           Model model)throws  NullPointerException{
         boolean check = true;
         Intern intern = internService.findTasksByEmail(email);
+        int totalHourse = 0;
         try{
             List<Task> tasks = intern.getTasks();
+            for (Task t: tasks) {
+                totalHourse = totalHourse + t.getHours();
+            }
             model.addAttribute("tasks", tasks);
+            model.addAttribute("totalHourse", totalHourse);
         }catch (NullPointerException e){
             check = false;
             model.addAttribute("EmptyTasksList", check);
@@ -110,17 +115,18 @@ public class InternController {
                           @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                           @RequestParam(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate,
                            Model model) throws  NullPointerException{
+        boolean check = internService.checkCorrectRange(startDate,finishDate);
+        int totalHourseInTheRange = 0;
         try{
             List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
-            for (Task t: taskResult
-            ) { System.out.println(t.getTask());
-
+            for (Task t: taskResult) {
+                totalHourseInTheRange = totalHourseInTheRange + t.getHours();
             }
+            model.addAttribute("totalHourseInTheRange", totalHourseInTheRange);
             model.addAttribute("taskResult", taskResult);
             return "reportTaskBeetwenTwoDates";
         }catch (NullPointerException e){
             return "redirect:/preReport/" + email;
         }
     }
-
 }
