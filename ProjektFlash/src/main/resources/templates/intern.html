@@ -22,9 +22,6 @@ table, th, td {
                 <tr>
                     <th>First name</th>
                     <th>Surname</th>
-                   <!--  <th>School</th> -->
-                    <!-- <th>Internship time</th>-->
-                    <!-- <th>Hours per week</th>-->
                     <th></th>
                     <th></th>
                     <th></th>
@@ -34,9 +31,6 @@ table, th, td {
                 <tr th:each="intern : ${interns}">
                     <td th:text="${intern.firstName}"></td>
                     <td th:text="${intern.surname}"></td>
-                    <!--  <td th:text="${intern.school}"></td>-->
-                    <!--  <td th:text="${#strings.arrayJoin(intern.internshipTime,' - ')}"></td>-->
-                    <!--  <td th:text="${intern.hoursPerWeek}"></td>-->
                     <td><a th:href="@{/details/{email}(email=${intern.email})}">Details</a></td>
                     <td><a th:href="@{/delete/{email}(email=${intern.email})}">Delete</a></td>
                     <td><a th:href="@{/editIntern/{_id}(_id=${intern._id})}">Edit</a></td>

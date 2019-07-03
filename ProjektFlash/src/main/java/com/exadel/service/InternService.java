@@ -7,9 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class InternService {
@@ -122,11 +120,30 @@ public class InternService {
         Intern intern = findTasksByEmail(email);
         List<Task> tasks = intern.getTasks();
         List<Task> taskRestult = new ArrayList<Task>();
+        Date correctStartDate = subtractDays(startdate, 1);
+        Date correctFinishDate = addDays(finishdate, 1);
         for (Task t: tasks) {
-            if(t.getDate().after(startdate) && t.getDate().before(finishdate)){
+            if(t.getDate().after(correctStartDate ) && t.getDate().before(correctFinishDate)){
                 taskRestult.add(t);
             }
         }
         return taskRestult;
     }
+
+    public static Date addDays(Date date, int days) {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days);
+
+        return cal.getTime();
+    }
+
+    public static Date subtractDays(Date date, int days) {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, -days);
+
+        return cal.getTime();
+    }
+
 }
