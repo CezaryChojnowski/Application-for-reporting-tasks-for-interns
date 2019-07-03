@@ -23,7 +23,7 @@ public class InternController {
     @Autowired
     InternService internService;
 
-    @RequestMapping("newIntern")
+    @RequestMapping("/newIntern")
     public String newIntern(Model model){
         model.addAttribute("intern", new Intern());
         return "internform.html";
@@ -38,6 +38,9 @@ public class InternController {
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
                                      ModelMap model){
+        if(internService.checkIfTheEmailIsUnique(email)==false){
+            return new ModelAndView("redirect:/newIntern");
+        }
         internService.createIntern(firstName, surname, school,email, hoursPerWeek, internshipTime);
         return new ModelAndView("redirect:/getAllIntern");
     }

@@ -151,4 +151,11 @@ public class InternService {
 
         return cal.getTime();
     }
+
+    public boolean checkIfTheEmailIsUnique(String email){
+        if(internRepository.findInternByEmail(email)==null){
+            return true;
+        }
+        return false;
+    }
 }
