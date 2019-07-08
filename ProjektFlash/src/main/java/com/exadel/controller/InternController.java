@@ -14,10 +14,11 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class InternController {
@@ -60,6 +61,16 @@ public class InternController {
             return new ModelAndView("redirect:/getAllIntern");
         }
         catch (ConstraintViolationException c){
+            Set<ConstraintViolation<?>> constraintViolations = c.getConstraintViolations();
+            Set<String> messages = new HashSet<>(constraintViolations.size());
+            messages.addAll(constraintViolations.stream()
+                    .map(constraintViolation -> String.format("%s", constraintViolation.getPropertyPath(),
+                            constraintViolation.getInvalidValue(), constraintViolation.getMessage()))
+                    .collect(Collectors.toList()));
+            Iterator iter = messages.iterator();
+//            while (iter.hasNext()) {
+//                System.out.println(iter.next());
+//            }
             return new ModelAndView("redirect:/newIntern");
         }
     }
