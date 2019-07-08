@@ -14,18 +14,22 @@
                 <label>First name:</label>
                 <input type="text"name="firstName" />
             </div>
+                <div th:text="${#sets.contains(#messages, 'firstName')}"/>
             <div class="form-group">
                 <label>Surname:</label>
                 <input type="text" name="surname" />
             </div>
+                <div th:text="${#sets.contains(#messages, 'surname')}"/>
             <div class="form-group">
                 <label>School:</label>
                 <input type="text" name="school" />
             </div>
+                <div th:text="${#sets.contains(#messages, 'school')}"/>
             <div class="form-group">
                 <label>Email:</label>
                 <input type="text" name="email" />
             </div>
+                <div th:text="${#sets.contains(#messages, 'email')}"/>
             <div class="form-group">
                 <label>Date startD:</label>
                 <input type="date" name="internshipTime[]" />
@@ -38,6 +42,7 @@
                 <label>Hours per week:</label>
                 <input type="number" name="hoursPerWeek" />
             </div>
+                <div th:text="${#sets.contains(#messages, 'hoursPerWeek')}"/>
             <button type="submit">Add</button>
         </form>
     </div>

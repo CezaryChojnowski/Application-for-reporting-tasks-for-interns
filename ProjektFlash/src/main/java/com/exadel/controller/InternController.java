@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,14 +32,24 @@ public class InternController {
     InternService internService;
 
     @RequestMapping(value="/newIntern")
-    public String newIntern(Model model){
-        model.addAttribute("intern", new Intern());
-        return "internform.html";
+    public String newIntern(Model model, @RequestParam(value="messages[]", required=false) Set<String> messages) throws NullPointerException{
+        try {
+            model.addAttribute("messages", messages);
+            model.addAttribute("intern", new Intern());
+            return "internform.html";
+        }
+        catch(NullPointerException n){
+            Set<String> myEmptySet = Collections.<String>emptySet();
+            messages = myEmptySet;
+            model.addAttribute("messages", messages);
+            model.addAttribute("intern", new Intern());
+            return "internform.html";
+        }
     }
 
     @RequestMapping(value="/createIntern")
     public ModelAndView createIntern(
-            @Valid @RequestParam String firstName,
+                                     @RequestParam String firstName,
                                      @RequestParam String surname,
                                      @RequestParam String school,
                                      @RequestParam String email,
@@ -57,7 +66,6 @@ public class InternController {
                 return new ModelAndView("redirect:/newIntern");
             }
             internService.createIntern(firstName, surname, school, email, hoursPerWeek, internshipTime);
-            //internService.createIntern(intern.getFirstName(), intern.getSurname(), intern.getSchool(),intern.getEmail(), intern.getHoursPerWeek(), intern.getInternshipTime());
             return new ModelAndView("redirect:/getAllIntern");
         }
         catch (ConstraintViolationException c){
@@ -67,11 +75,15 @@ public class InternController {
                     .map(constraintViolation -> String.format("%s", constraintViolation.getPropertyPath(),
                             constraintViolation.getInvalidValue(), constraintViolation.getMessage()))
                     .collect(Collectors.toList()));
-            Iterator iter = messages.iterator();
-//            while (iter.hasNext()) {
-//                System.out.println(iter.next());
-//            }
-            return new ModelAndView("redirect:/newIntern");
+            Iterator<String> it = messages.iterator();
+
+
+            while(it.hasNext()){
+                System.out.println(it.next());
+            }
+            model.addAttribute("messages", messages);
+            return new ModelAndView("redirect:/newIntern", model);
+
         }
     }
 
@@ -167,4 +179,6 @@ public class InternController {
             return "redirect:/preReport/" + email;
         }
     }
+
+
 }
