@@ -5,20 +5,28 @@ import com.exadel.model.Task;
 import com.exadel.service.InternService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
 @Controller
 public class InternController {
+
+    @Autowired
+    LocalValidatorFactoryBean localValidatorFactoryBean;
+
+    @Autowired
+    ValidatingMongoEventListener ValidatingMongoEventListener;
 
     @Autowired
     InternService internService;
@@ -30,23 +38,30 @@ public class InternController {
     }
 
     @RequestMapping(value="/createIntern")
-    public ModelAndView createIntern(@RequestParam String firstName,
+    public ModelAndView createIntern(
+            @Valid @RequestParam String firstName,
                                      @RequestParam String surname,
                                      @RequestParam String school,
                                      @RequestParam String email,
                                      @RequestParam int hoursPerWeek,
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
-                                     ModelMap model){
-        boolean checkCorrectRange = internService.checkCorrectRange(internshipTime[0],internshipTime[1]);
-        if(internService.checkIfTheEmailIsUnique(email)==false){
+                                     ModelMap model) throws ConstraintViolationException {
+        try {
+            boolean checkCorrectRange = internService.checkCorrectRange(internshipTime[0], internshipTime[1]);
+            if (internService.checkIfTheEmailIsUnique(email) == false) {
+                return new ModelAndView("redirect:/newIntern");
+            }
+            if (!checkCorrectRange) {
+                return new ModelAndView("redirect:/newIntern");
+            }
+            internService.createIntern(firstName, surname, school, email, hoursPerWeek, internshipTime);
+            //internService.createIntern(intern.getFirstName(), intern.getSurname(), intern.getSchool(),intern.getEmail(), intern.getHoursPerWeek(), intern.getInternshipTime());
+            return new ModelAndView("redirect:/getAllIntern");
+        }
+        catch (ConstraintViolationException c){
             return new ModelAndView("redirect:/newIntern");
         }
-        if(!checkCorrectRange){
-            return new ModelAndView("redirect:/newIntern");
-        }
-        internService.createIntern(firstName, surname, school,email, hoursPerWeek, internshipTime);
-        return new ModelAndView("redirect:/getAllIntern");
     }
 
     @RequestMapping("/getAllIntern")

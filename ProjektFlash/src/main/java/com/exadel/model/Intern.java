@@ -3,20 +3,33 @@ package com.exadel.model;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
 @Document(collection = "intern")
+@Validated
 public class Intern {
     @Id
     private ObjectId _id;
+    @NotEmpty(message = "FirstName can't be empty")
     private String firstName;
+    @NotEmpty(message = "Surname can't be empty")
     private String surname;
+    @NotEmpty(message = "School can't be empty")
     private String school;
+    @NotEmpty(message = "Email can't be empty")
+    @Email(message = "Email can't be in this format")
     private String email;
     private String role;
+    @NotEmpty(message = "Intership time can't be empty")
+    @NotNull(message = "Intership time can't be null")
     private Date[] internshipTime;
+    @NotNull(message = "Hours per week can't be null")
+    @Min(value = 1, message="Hours per week can't be lesthean 1")
+    @Max(value = 40, message ="Hours per week can't be greater than 40")
     private int hoursPerWeek;
     private int totalHoursPerWeek;
     private List<Task> tasks;
@@ -24,7 +37,7 @@ public class Intern {
     public Intern() {
     }
 
-    public Intern(String firstName, String surname, String school, String email, Date[] internshipTime, int hoursPerWeek) {
+    public Intern(@NotEmpty(message = "FirstName can't be empty") String firstName, @NotEmpty(message = "Surname can't be empty") String surname, @NotEmpty(message = "School can't be empty") String school, @Email(message = "Email can not be in this format") String email, @NotNull(message = "Hours per week can't be null") Date[] internshipTime, @NotNull(message = "Hours per week can't be null") @Min(value = 1, message = "Hours per week can't be lesthean 1") @Max(value = 40, message = "Hours per week can't be greater than 40") int hoursPerWeek) {
         this.firstName = firstName;
         this.surname = surname;
         this.school = school;
@@ -32,6 +45,7 @@ public class Intern {
         this.internshipTime = internshipTime;
         this.hoursPerWeek = hoursPerWeek;
     }
+
 
 
     public List<Task> getTasks() {
