@@ -32,7 +32,7 @@ public class InternController {
     InternService internService;
 
     @RequestMapping(value="/newIntern")
-    public String newIntern(Model model, @RequestParam(value="messages[]", required=false) Set<String> messages) throws NullPointerException{
+    public String newIntern(Model model, @RequestParam(value="messages", required=false, defaultValue = "!empty") Set<String> messages) throws NullPointerException{
         try {
             model.addAttribute("messages", messages);
             model.addAttribute("intern", new Intern());
@@ -77,10 +77,6 @@ public class InternController {
                     .collect(Collectors.toList()));
             Iterator<String> it = messages.iterator();
 
-
-            while(it.hasNext()){
-                System.out.println(it.next());
-            }
             model.addAttribute("messages", messages);
             return new ModelAndView("redirect:/newIntern", model);
 

@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -127,5 +128,44 @@ public class Intern {
     public void setTotalHoursPerWeek(int totalHoursPerWeek) {
         this.totalHoursPerWeek = totalHoursPerWeek;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Intern)) return false;
+
+        Intern intern = (Intern) o;
+
+        if (getHoursPerWeek() != intern.getHoursPerWeek()) return false;
+        if (getTotalHoursPerWeek() != intern.getTotalHoursPerWeek()) return false;
+        if (get_id() != null ? !get_id().equals(intern.get_id()) : intern.get_id() != null) return false;
+        if (getFirstName() != null ? !getFirstName().equals(intern.getFirstName()) : intern.getFirstName() != null)
+            return false;
+        if (getSurname() != null ? !getSurname().equals(intern.getSurname()) : intern.getSurname() != null)
+            return false;
+        if (getSchool() != null ? !getSchool().equals(intern.getSchool()) : intern.getSchool() != null) return false;
+        if (getEmail() != null ? !getEmail().equals(intern.getEmail()) : intern.getEmail() != null) return false;
+        if (getRole() != null ? !getRole().equals(intern.getRole()) : intern.getRole() != null) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(getInternshipTime(), intern.getInternshipTime())) return false;
+        return getTasks() != null ? getTasks().equals(intern.getTasks()) : intern.getTasks() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = get_id() != null ? get_id().hashCode() : 0;
+        result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
+        result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+        result = 31 * result + (getSchool() != null ? getSchool().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        result = 31 * result + (getRole() != null ? getRole().hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(getInternshipTime());
+        result = 31 * result + getHoursPerWeek();
+        result = 31 * result + getTotalHoursPerWeek();
+        result = 31 * result + (getTasks() != null ? getTasks().hashCode() : 0);
+        return result;
+    }
+
 
 }
