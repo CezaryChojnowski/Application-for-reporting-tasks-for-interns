@@ -18,6 +18,10 @@
                 <label>Date:</label>
                 <input type="date" name="date" />
             </div>
+            <div th:if="${enterDate == false}">Enter the date</div>
+            <div th:if="${checkIfTheTaskIsInTheRange == false}">Task data is out of the range of the internship</div>
+            <div th:if="${checkIfTheTaskIsInTheRange == false}" th:text="${#dates.listFormat(intern.internshipTime, 'dd.MM.yyyy')}"></div>
+            <div th:if="${checkIfTheTimeIsInTheLimit == false}">Task time out of range - <1-8></div>
             <div class="form-group">
                 <label>Hours:</label>
                 <input type="number" name="hours" />
