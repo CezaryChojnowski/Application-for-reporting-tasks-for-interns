@@ -15,22 +15,22 @@ import java.util.List;
 public class Intern {
     @Id
     private ObjectId _id;
-    @NotEmpty(message = "FirstName can't be empty")
+    @NotEmpty
     private String firstName;
-    @NotEmpty(message = "Surname can't be empty")
+    @NotEmpty
     private String surname;
-    @NotEmpty(message = "School can't be empty")
+    @NotEmpty
     private String school;
-    @NotEmpty(message = "Email can't be empty")
-    @Email(message = "Email can't be in this format")
+    @NotEmpty
+    @Email
     private String email;
     private String role;
-    @NotEmpty(message = "Intership time can't be empty")
-    @NotNull(message = "Intership time can't be null")
+    @NotEmpty
+    @NotNull
     private Date[] internshipTime;
-    @NotNull(message = "Hours per week can't be null")
-    @Min(value = 1, message="Hours per week can't be lesthean 1")
-    @Max(value = 40, message ="Hours per week can't be greater than 40")
+    @NotNull
+    @Min(value = 1)
+    @Max(value = 40)
     private int hoursPerWeek;
     private int totalHoursPerWeek;
     private List<Task> tasks;
@@ -38,7 +38,7 @@ public class Intern {
     public Intern() {
     }
 
-    public Intern(@NotEmpty(message = "FirstName can't be empty") String firstName, @NotEmpty(message = "Surname can't be empty") String surname, @NotEmpty(message = "School can't be empty") String school, @Email(message = "Email can not be in this format") String email, @NotNull(message = "Hours per week can't be null") Date[] internshipTime, @NotNull(message = "Hours per week can't be null") @Min(value = 1, message = "Hours per week can't be lesthean 1") @Max(value = 40, message = "Hours per week can't be greater than 40") int hoursPerWeek) {
+    public Intern(@NotEmpty String firstName, @NotEmpty String surname, @NotEmpty String school, @Email String email, @NotNull Date[] internshipTime, @NotNull @Min(value = 1) @Max(value = 40) int hoursPerWeek) {
         this.firstName = firstName;
         this.surname = surname;
         this.school = school;

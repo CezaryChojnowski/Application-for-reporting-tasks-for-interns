@@ -14,7 +14,7 @@
                 <label>First name:</label>
                 <input type="text"name="firstName" />
             </div>
-                <div th:if="${#sets.contains(messages, 'firstName')}">FirstName can't be empty</div>
+                <div th:if="${#sets.contains(messages, 'firstName')}">Firstname can't be empty</div>
             <div class="form-group">
                 <label>Surname:</label>
                 <input type="text" name="surname" />
@@ -29,6 +29,7 @@
                 <label>Email:</label>
                 <input type="text" name="email" />
             </div>
+                <div th:if="${checkIfTheEmailIsUnique == false}">Email is not unique</div>
                 <div th:if="${#sets.contains(messages, 'email')}">Email can't be empty</div>
             <div class="form-group">
                 <label>Date startD:</label>
@@ -38,11 +39,12 @@
                 <label>Date finish:</label>
                 <input type="date" name="internshipTime[]" />
             </div>
+             <div th:if="${checkCorrectRange == false}">Incorrect range</div>
             <div class="form-group">
                 <label>Hours per week:</label>
                 <input type="number" name="hoursPerWeek" />
             </div>
-                <div th:if="${#sets.contains(messages, 'hoursPerWeek')}"> can't be empty</div>
+                <div th:if="${#sets.contains(messages, 'hoursPerWeek')}"> Wrong value - range between 1 and 40 </div>
             <button type="submit">Add</button>
         </form>
     </div>

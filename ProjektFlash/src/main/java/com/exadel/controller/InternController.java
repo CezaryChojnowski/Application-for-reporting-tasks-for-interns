@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolation;
@@ -32,9 +33,14 @@ public class InternController {
     InternService internService;
 
     @RequestMapping(value="/newIntern")
-    public String newIntern(Model model, @RequestParam(value="messages", required=false, defaultValue = "!empty") Set<String> messages) throws NullPointerException{
+    public String newIntern(Model model,
+                            @RequestParam(value="messages", required=false, defaultValue = "!empty") Set<String> messages,
+                            @RequestParam(required=false, defaultValue = "true") boolean checkIfTheEmailIsUnique,
+                            @RequestParam(required=false, defaultValue = "true") boolean checkCorrectRange) throws NullPointerException{
         try {
             model.addAttribute("messages", messages);
+            model.addAttribute("checkIfTheEmailIsUnique", checkIfTheEmailIsUnique);
+            model.addAttribute("checkCorrectRange", checkCorrectRange);
             model.addAttribute("intern", new Intern());
             return "internform.html";
         }
@@ -42,6 +48,8 @@ public class InternController {
             Set<String> myEmptySet = Collections.<String>emptySet();
             messages = myEmptySet;
             model.addAttribute("messages", messages);
+            model.addAttribute("checkIfTheEmailIsUnique", checkIfTheEmailIsUnique);
+            model.addAttribute("checkCorrectRange", checkCorrectRange);
             model.addAttribute("intern", new Intern());
             return "internform.html";
         }
@@ -53,17 +61,20 @@ public class InternController {
                                      @RequestParam String surname,
                                      @RequestParam String school,
                                      @RequestParam String email,
-                                     @RequestParam int hoursPerWeek,
+                                     @RequestParam(defaultValue = "0") int hoursPerWeek,
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
-                                     ModelMap model) throws ConstraintViolationException {
+                                     ModelMap model) throws ConstraintViolationException, NullPointerException, MethodArgumentTypeMismatchException, NumberFormatException {
         try {
             boolean checkCorrectRange = internService.checkCorrectRange(internshipTime[0], internshipTime[1]);
-            if (internService.checkIfTheEmailIsUnique(email) == false) {
-                return new ModelAndView("redirect:/newIntern");
+            boolean checkIfTheEmailIsUnique = internService.checkIfTheEmailIsUnique(email);
+            if (!checkIfTheEmailIsUnique) {
+                model.addAttribute("checkIfTheEmailIsUnique", checkIfTheEmailIsUnique);
+                return new ModelAndView("redirect:/newIntern", model);
             }
             if (!checkCorrectRange) {
-                return new ModelAndView("redirect:/newIntern");
+                model.addAttribute("checkCorrectRange",checkCorrectRange);
+                return new ModelAndView("redirect:/newIntern", model);
             }
             internService.createIntern(firstName, surname, school, email, hoursPerWeek, internshipTime);
             return new ModelAndView("redirect:/getAllIntern");
@@ -76,10 +87,11 @@ public class InternController {
                             constraintViolation.getInvalidValue(), constraintViolation.getMessage()))
                     .collect(Collectors.toList()));
             Iterator<String> it = messages.iterator();
-
             model.addAttribute("messages", messages);
             return new ModelAndView("redirect:/newIntern", model);
-
+        }
+        catch (NullPointerException n){
+            return new ModelAndView("redirect:/newIntern");
         }
     }
 
@@ -125,10 +137,24 @@ public class InternController {
 
     @RequestMapping("/editIntern/{id}")
     public String editIntern(@PathVariable ObjectId id,
-                             Model model){
+                             Model model,
+                             @RequestParam(value="messages", required=false, defaultValue = "!empty") Set<String> messages,
+                             @RequestParam(required=false, defaultValue = "true") boolean checkCorrectRange) throws NullPointerException{
         Intern intern = internService.findByid(id);
-        model.addAttribute("intern", intern);
-        return "internEditForm.html";
+        try {
+            model.addAttribute("messages", messages);
+            model.addAttribute("checkCorrectRange", checkCorrectRange);
+            model.addAttribute("intern", intern);
+            return "internEditForm.html";
+        }
+        catch(NullPointerException n){
+            Set<String> myEmptySet = Collections.<String>emptySet();
+            messages = myEmptySet;
+            model.addAttribute("messages", messages);
+            model.addAttribute("checkCorrectRange", checkCorrectRange);
+            model.addAttribute("intern", intern);
+            return "internEditForm.html";
+        }
     }
 
     @RequestMapping("/updateIntern")
@@ -137,12 +163,39 @@ public class InternController {
                                      @RequestParam String surname,
                                      @RequestParam String school,
                                      @RequestParam String email,
-                                     @RequestParam int hoursPerWeek,
+                                     @RequestParam(defaultValue = "0") int hoursPerWeek,
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
                                      ModelMap model){
-        internService.update(_id, firstName, surname, school, email, hoursPerWeek, internshipTime);
-        return new ModelAndView("redirect:/getAllIntern");
+        try {
+            boolean checkCorrectRange = internService.checkCorrectRange(internshipTime[0], internshipTime[1]);
+//            boolean checkIfTheEmailIsUnique = internService.checkIfTheEmailIsUnique(email);
+//            if (!checkIfTheEmailIsUnique) {
+//                model.addAttribute("checkIfTheEmailIsUnique", checkIfTheEmailIsUnique);
+//                return new ModelAndView("redirect:/editIntern/" + _id, model);
+//            }
+            if (!checkCorrectRange) {
+                model.addAttribute("checkCorrectRange",checkCorrectRange);
+                return new ModelAndView("redirect:/editIntern/" + _id, model);
+            }
+            internService.update(_id, firstName, surname, school, email, hoursPerWeek, internshipTime);
+            return new ModelAndView("redirect:/getAllIntern");
+        }
+        catch (ConstraintViolationException c){
+            Set<ConstraintViolation<?>> constraintViolations = c.getConstraintViolations();
+            Set<String> messages = new HashSet<>(constraintViolations.size());
+            messages.addAll(constraintViolations.stream()
+                    .map(constraintViolation -> String.format("%s", constraintViolation.getPropertyPath(),
+                            constraintViolation.getInvalidValue(), constraintViolation.getMessage()))
+                    .collect(Collectors.toList()));
+            Iterator<String> it = messages.iterator();
+            model.addAttribute("messages", messages);
+            return new ModelAndView("redirect:/editIntern/" + _id, model);
+        }
+        catch (NullPointerException n){
+            return new ModelAndView("redirect:/newIntern");
+        }
+
     }
 
     @RequestMapping("/preReport/{email}/{check}")
