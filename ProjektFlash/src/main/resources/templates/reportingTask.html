@@ -21,19 +21,21 @@
             <div th:if="${enterDate == false}">Enter the date</div>
             <div th:if="${checkIfTheTaskIsInTheRange == false}">Task data is out of the range of the internship</div>
             <div th:if="${checkIfTheTaskIsInTheRange == false}" th:text="${#dates.listFormat(intern.internshipTime, 'dd.MM.yyyy')}"></div>
-            <div th:if="${checkIfTheTimeIsInTheLimit == false}">Task time out of range - <1-8></div>
             <div class="form-group">
                 <label>Hours:</label>
                 <input type="number" name="hours" />
             </div>
+            <div th:if="${checkIfTheTimeIsInTheLimit == false}">Task time out of range - <1-8></div>
             <div class="form-group">
                 <label>Task:</label>
                 <input type="text" name="task" />
             </div>
+            <div th:if="${emptyTask == false}">Task cant be empty</div>
             <div class="form-group">
                 <label>EK:</label>
                 <input type="text" name="EK" />
             </div>
+            <div th:if="${emptyEK == false}">EK cant be empty</div>
             <button type="submit">Report task</button>
         </form>
     </div>

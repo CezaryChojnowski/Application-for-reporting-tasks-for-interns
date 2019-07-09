@@ -3,18 +3,22 @@ package com.exadel.model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
-
+@Validated
 public class Task {
     @Id
     private ObjectId _id;
     private Date date;
+    @NotNull
+    @Min(value = 1)
+    @Max(value = 8)
     private int hours;
+    @NotEmpty
     private String task;
+    @NotEmpty
     private String EK;
 
     public Task(Date date, int hours, String task, String EK) {

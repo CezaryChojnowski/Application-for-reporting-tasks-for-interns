@@ -30,12 +30,16 @@ public class TaskController {
                           Model model,
                           @RequestParam(defaultValue = "true") boolean checkIfTheTaskIsInTheRange,
                           @RequestParam(defaultValue = "true") boolean checkIfTheTimeIsInTheLimit,
-                          @RequestParam(defaultValue = "true") boolean enterDate){
+                          @RequestParam(defaultValue = "true") boolean enterDate,
+                          @RequestParam(defaultValue = "true") boolean emptyTask,
+                          @RequestParam(defaultValue = "true") boolean emptyEK){
         Intern intern = internService.findInternByEmail(email);
         model.addAttribute("task", new Task());
         model.addAttribute("enterDate", enterDate);
-        model.addAttribute("checkIfTheTimeIsInTheLimit", checkIfTheTimeIsInTheLimit);
         model.addAttribute("checkIfTheTaskIsInTheRange", checkIfTheTaskIsInTheRange);
+        model.addAttribute("checkIfTheTimeIsInTheLimit", checkIfTheTimeIsInTheLimit);
+        model.addAttribute("emptyTask", emptyTask);
+        model.addAttribute("emptyEK", emptyEK);
         model.addAttribute("intern", intern);
         return "reportingTask.html";
     }
@@ -51,7 +55,13 @@ public class TaskController {
             Intern intern = internService.findInternByEmail(email);
             boolean checkIfTheTaskIsInTheRange = internService.checkIfTheTaskIsInTheRange(date, intern.getInternshipTime());
             boolean checkIfTheTimeIsInTheLimit = internService.checkIfTheTimeIsInTheLimit(hours);
-            if((checkIfTheTaskIsInTheRange==false) || (checkIfTheTimeIsInTheLimit==false)){
+            boolean emptyTask = !task.isEmpty();
+            boolean emptyEK = !EK.isEmpty();
+            System.out.println(emptyTask);
+            System.out.println(emptyEK);
+            if((checkIfTheTaskIsInTheRange==false) || (checkIfTheTimeIsInTheLimit==false) || emptyTask==false || emptyEK==false){
+                model.addAttribute("emptyTask", emptyTask);
+                model.addAttribute("emptyEK", emptyEK);
                 model.addAttribute("checkIfTheTaskIsInTheRange", checkIfTheTaskIsInTheRange);
                 model.addAttribute("checkIfTheTimeIsInTheLimit", checkIfTheTimeIsInTheLimit);
                 return new ModelAndView("redirect:/newTask/" + email, model);
@@ -78,9 +88,19 @@ public class TaskController {
     @RequestMapping("/editTask/{email}/{_idTask}")
     public String editIntern(@PathVariable String email,
                              @PathVariable ObjectId _idTask,
-                             Model model){
+                             Model model,
+                             @RequestParam(defaultValue = "true") boolean checkIfTheTaskIsInTheRange,
+                             @RequestParam(defaultValue = "true") boolean checkIfTheTimeIsInTheLimit,
+                             @RequestParam(defaultValue = "true") boolean enterDate,
+                             @RequestParam(defaultValue = "true") boolean emptyTask,
+                             @RequestParam(defaultValue = "true") boolean emptyEK){
         Intern intern = internService.findInternByEmail(email);
         Task task = internService.findTask(email, _idTask);
+        model.addAttribute("checkIfTheTaskIsInTheRange", checkIfTheTaskIsInTheRange);
+        model.addAttribute("checkIfTheTimeIsInTheLimit", checkIfTheTimeIsInTheLimit);
+        model.addAttribute("emptyTask", emptyTask);
+        model.addAttribute("emptyEK", emptyEK);
+        model.addAttribute("enterDate", enterDate);
         model.addAttribute("intern", intern);
         model.addAttribute("task", task);
         System.out.println(_idTask);
@@ -93,9 +113,27 @@ public class TaskController {
                                      @RequestParam(value="date")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                      @RequestParam int hours, @RequestParam String task,
-                                     @RequestParam String EK){
-        internService.updateTask(email, _idTask, date, hours, task, EK);
-        return new ModelAndView("redirect:/details/" + email);
+                                     @RequestParam String EK, ModelMap model){
+        try{
+            Intern intern = internService.findInternByEmail(email);
+            boolean checkIfTheTaskIsInTheRange = internService.checkIfTheTaskIsInTheRange(date, intern.getInternshipTime());
+            boolean checkIfTheTimeIsInTheLimit = internService.checkIfTheTimeIsInTheLimit(hours);
+            boolean emptyTask = !task.isEmpty();
+            boolean emptyEK = !EK.isEmpty();
+            if((checkIfTheTaskIsInTheRange==false) || (checkIfTheTimeIsInTheLimit==false) || emptyTask==false || emptyEK==false){
+                model.addAttribute("emptyTask", emptyTask);
+                model.addAttribute("emptyEK", emptyEK);
+                model.addAttribute("checkIfTheTaskIsInTheRange", checkIfTheTaskIsInTheRange);
+                model.addAttribute("checkIfTheTimeIsInTheLimit", checkIfTheTimeIsInTheLimit);
+                return new ModelAndView("redirect:/editTask/" + email + "/" + _idTask, model);
+            }
+            internService.updateTask(email, _idTask, date, hours, task, EK);
+            return new ModelAndView("redirect:/details/" + email);
+        }catch (NullPointerException n){
+            boolean enterDate = false;
+            model.addAttribute("enterDate", enterDate);
+            return new ModelAndView("redirect:/editTask/" + email + "/" + _idTask, model);
+        }
     }
 }
 
