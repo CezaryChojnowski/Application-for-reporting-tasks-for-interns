@@ -216,10 +216,12 @@ public class InternController {
         boolean checkCorrectRange = internService.checkCorrectRange(startDate,finishDate);
         int totalHourseInTheRange = 0;
         try{
+            Intern intern = internService.findInternByEmail(email);
             List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
             for (Task t: taskResult) {
                 totalHourseInTheRange = totalHourseInTheRange + t.getHours();
             }
+            model.addAttribute("intern", intern);
             model.addAttribute("totalHourseInTheRange", totalHourseInTheRange);
             model.addAttribute("taskResult", taskResult);
             if(!checkCorrectRange){
