@@ -10,27 +10,40 @@ table, th, td {
   border: 1px solid black;
 }
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
     <body>
-            <table>
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Hours</th>
-                    <th>Task</th>
-                    <th>EK</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="task : ${taskResult}">
-                    <td th:text="${#dates.format(task.getDate(), 'dd.MM.yyyy')}"></td>
-                    <td th:text="${task.getHours()}"></td>
-                    <td th:text="${task.getTask()}"></td>
-                    <td th:text="${task.getEK()}"></td>
-                </tr>
-                </tbody>
-                <td>Total: </td>
-                <td th:text="${totalHourseInTheRange}"></td>
-            </table>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+            <h2>Internship log</h2>
+                <div style="margin-top:20px">
+                            <table class="table table-striped table-bordered" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>The number of hours</th>
+                                    <th>Range of tasks performed</th>
+                                    <th>Reference to EK*</th>
+                                    <th>Signature of the internship tutor</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="task : ${taskResult}">
+                                    <td th:text="${#dates.format(task.getDate(), 'dd.MM.yyyy')}"></td>
+                                    <td th:text="${task.getHours()}"></td>
+                                    <td th:text="${task.getTask()}"></td>
+                                    <td th:text="${task.getEK()}"></td>
+                                </tr>
+                                </tbody>
+                                <td>Total: </td>
+                                <td th:text="${totalHourseInTheRange}"></td>
+                            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
     </body>
 </html>
