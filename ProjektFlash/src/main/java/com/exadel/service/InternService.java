@@ -3,11 +3,23 @@ package com.exadel.service;
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
 import com.exadel.repository.InternRepository;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 @Service
 public class InternService {
@@ -173,5 +185,126 @@ public class InternService {
             return true;
         }
         return false;
+    }
+
+    public boolean createPdf(List<Task> taskResult, ServletContext context, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, DocumentException {
+        Document document = new Document(PageSize.A4, 15,15,45,30);
+        try {
+            String filePath = context.getRealPath("/response/reports");
+            File file = new File(filePath);
+            boolean exist = new File(filePath).exists();
+            if (!exist) {
+                new File(filePath).mkdir();
+            }
+
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file + "/" + "interns" + ".pdf"));
+            document.open();
+
+            Font mainFont = FontFactory.getFont("Arial", 10, BaseColor.BLACK);
+
+            Paragraph paragraph = new Paragraph("Raport", mainFont);
+            paragraph.setAlignment(Element.ALIGN_CENTER);
+            paragraph.setIndentationLeft(50);
+            paragraph.setIndentationRight(50);
+            paragraph.setSpacingAfter(10);
+            document.add(paragraph);
+
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10);
+
+            Font tableHeader = FontFactory.getFont("Arial", 10, BaseColor.BLACK);
+            Font tableBody = FontFactory.getFont("Arial", 9, BaseColor.BLACK);
+
+            float[] columnWidths = {2f, 2f, 2f, 2f};
+            table.setWidths(columnWidths);
+
+            PdfPCell date = new PdfPCell(new Paragraph("Date", tableHeader));
+            date.setBorderColor(BaseColor.BLACK);
+            date.setPadding(10);
+            date.setHorizontalAlignment(Element.ALIGN_CENTER);
+            date.setVerticalAlignment(Element.ALIGN_CENTER);
+            date.setBackgroundColor(BaseColor.GRAY);
+            date.setExtraParagraphSpace(5f);
+            table.addCell(date);
+
+            PdfPCell hours = new PdfPCell(new Paragraph("hours", tableHeader));
+            hours.setBorderColor(BaseColor.BLACK);
+            hours.setPadding(10);
+            hours.setHorizontalAlignment(Element.ALIGN_CENTER);
+            hours.setVerticalAlignment(Element.ALIGN_CENTER);
+            hours.setBackgroundColor(BaseColor.GRAY);
+            hours.setExtraParagraphSpace(5f);
+            table.addCell(hours);
+
+            PdfPCell task = new PdfPCell(new Paragraph("Task", tableHeader));
+            task.setBorderColor(BaseColor.BLACK);
+            task.setPadding(10);
+            task.setHorizontalAlignment(Element.ALIGN_CENTER);
+            task.setVerticalAlignment(Element.ALIGN_CENTER);
+            task.setBackgroundColor(BaseColor.GRAY);
+            task.setExtraParagraphSpace(5f);
+            table.addCell(task);
+
+            PdfPCell ek = new PdfPCell(new Paragraph("EK", tableHeader));
+            ek.setBorderColor(BaseColor.BLACK);
+            ek.setPadding(10);
+            ek.setHorizontalAlignment(Element.ALIGN_CENTER);
+            ek.setVerticalAlignment(Element.ALIGN_CENTER);
+            ek.setBackgroundColor(BaseColor.GRAY);
+            ek.setExtraParagraphSpace(5f);
+            table.addCell(ek);
+
+            for (Task printTask : taskResult) {
+                Date dateTemp = printTask.getDate();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
+                String strDate = formatter.format(dateTemp);
+                PdfPCell dateValue = new PdfPCell(new Paragraph(strDate, tableBody));
+                dateValue.setBorderColor(BaseColor.BLACK);
+                dateValue.setPadding(10);
+                dateValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+                dateValue.setVerticalAlignment(Element.ALIGN_CENTER);
+                dateValue.setBackgroundColor(BaseColor.WHITE);
+                dateValue.setExtraParagraphSpace(5f);
+                table.addCell(dateValue);
+
+                String hourseTemp = Integer.toString(printTask.getHours());
+                PdfPCell hourseValue = new PdfPCell(new Paragraph(hourseTemp, tableBody));
+                hourseValue.setBorderColor(BaseColor.BLACK);
+                hourseValue.setPadding(10);
+                hourseValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+                hourseValue.setVerticalAlignment(Element.ALIGN_CENTER);
+                hourseValue.setBackgroundColor(BaseColor.WHITE);
+                hourseValue.setExtraParagraphSpace(5f);
+                table.addCell(hourseValue);
+
+                PdfPCell taskValue = new PdfPCell(new Paragraph(printTask.getTask(), tableBody));
+                taskValue.setBorderColor(BaseColor.BLACK);
+                taskValue.setPadding(10);
+                taskValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+                taskValue.setVerticalAlignment(Element.ALIGN_CENTER);
+                taskValue.setBackgroundColor(BaseColor.WHITE);
+                taskValue.setExtraParagraphSpace(5f);
+                table.addCell(taskValue);
+
+                PdfPCell ekValue = new PdfPCell(new Paragraph(printTask.getEK(), tableBody));
+                ekValue.setBorderColor(BaseColor.BLACK);
+                ekValue.setPadding(10);
+                ekValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+                ekValue.setVerticalAlignment(Element.ALIGN_CENTER);
+                ekValue.setBackgroundColor(BaseColor.WHITE);
+                ekValue.setExtraParagraphSpace(5f);
+                table.addCell(ekValue);
+            }
+            document.add(table);
+            document.close();
+            writer.close();
+            System.out.println("Udało się");
+            return true;
+        }catch (Exception e){
+            System.out.println("Nie udało się");
+            return false;
+        }
     }
 }
