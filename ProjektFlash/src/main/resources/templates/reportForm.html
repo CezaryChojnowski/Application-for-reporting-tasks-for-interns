@@ -5,37 +5,41 @@
       layout:decorator="default">
 <head>
     <title>Report task</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
 </head>
 <body>
-<div>
-    <div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+<div align="center" >
+    <div class="form-group">
     <form action="/report">
-    <div>
+            <div style="width: 20%">
     <p>Report of work in defined range days</p>
             <div class="form-group">
                 <label>Email:</label>
-                <input type="text" name="email" th:value="${intern.email}" readonly="readonly"/>
+                <input class="form-control-plaintext" type="text" name="email" th:value="${intern.email}" readonly/>
             </div>
             <div class="form-group">
                 <label>Date internship start:</label>
-                <input type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}" readonly="readonly"/>
+                <input class="form-control" type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}" readonly="readonly"/>
             </div>
             <div class="form-group">
                 <label>Date internship finish:</label>
-                <input type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}" readonly="readonly"/>
+                <input class="form-control" type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}" readonly="readonly"/>
             </div>
             <div class="form-group">
                 <label>Date start:</label>
-                <input type="date" name="startDate"/>
+            <input class="form-control" type="date" name="startDate" th:min="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}" th:max="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}"/>
             </div>
             <div class="form-group">
                 <label>Date finish:</label>
-                <input type="date" name="finishDate"/>
-            </div>
-            <div th:if="${check==false}">
+            <div class="alert alert-danger" role="alert" th:if="${check==false}">
                 Incorrect range
             </div>
-            <button type="submit">Report</button>
+            <input class="form-control" type="date" name="finishDate" th:min="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}" th:max="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}"/>
+            </div>
+            <button class="btn btn-primary" type="submit">Report</button>
     </div>
     </form>
     </div>

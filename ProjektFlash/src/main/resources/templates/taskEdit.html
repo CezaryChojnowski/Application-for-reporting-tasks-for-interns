@@ -5,43 +5,45 @@
       layout:decorator="default">
 <head>
     <title>Report task</title>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-<div>
-    <div>
-        <form action="/updateTask">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<div align="center" >
+    <div class="form-group">
+        <form style="width: 20%" action="/updateTask">
             <div>
                 <label>Email:</label>
-                <input type="text" name="email" th:value="${intern.email}" readonly="readonly"/>
+                <input class="form-control-plaintext" type="text" name="email" th:value="${intern.email}" readonly/>
             </div>
             <div class="form-group">
                 <label>ID Task:</label>
-                <input type="text" name="_idTask" th:value="${task._idTask}" readonly="readonly" />
+                <input class="form-control-plaintext" type="text" name="_idTask" th:value="${task._idTask}" readonly/>
             </div>
             <div>
                 <label>Date:</label>
-                <input type="date" name="date" th:value="${#dates.format(task.date, 'yyyy-MM-dd')}"/>
+            <div class="alert alert-danger" role="alert" th:if="${enterDate == false}">Enter the date</div>
+            <div class="alert alert-danger" role="alert" th:if="${checkIfTheTaskIsInTheRange == false}">Task data is out of the range of the internship</div>
+            <div class="alert alert-danger" role="alert" th:if="${checkIfTheTaskIsInTheRange == false}" th:text="${#dates.listFormat(intern.internshipTime, 'dd.MM.yyyy')}"></div>
+                <input class="form-control" type="date" name="date" th:value="${#dates.format(task.date, 'yyyy-MM-dd')}" th:min="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}" th:max="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}"/>
             </div>
-            <div th:if="${enterDate == false}">Enter the date</div>
-            <div th:if="${checkIfTheTaskIsInTheRange == false}">Task data is out of the range of the internship</div>
-            <div th:if="${checkIfTheTaskIsInTheRange == false}" th:text="${#dates.listFormat(intern.internshipTime, 'dd.MM.yyyy')}"></div>
             <div class="form-group">
                 <label>Hours:</label>
-                <input type="number" name="hours" th:value="${task.hours}" />
+                <div class="alert alert-danger" role="alert" th:if="${checkIfTheTimeIsInTheLimit == false}">Task time out of range - <1-8></div>
+                <input class="form-control" type="number" name="hours" th:value="${task.hours}" />
             </div>
-            <div th:if="${checkIfTheTimeIsInTheLimit == false}">Task time out of range - <1-8></div>
             <div class="form-group">
                 <label>Task:</label>
-                <input type="text" name="task" th:value="${task.task}" />
+                <div class="alert alert-danger" role="alert" th:if="${emptyTask == false}">Task cant be empty</div>
+                <input class="form-control" type="text" name="task" th:value="${task.task}" />
             </div>
-            <div th:if="${emptyTask == false}">Task cant be empty</div>
             <div class="form-group">
                 <label>EK:</label>
-                <input type="text" name="EK" th:value="${task.EK}"/>
+                <div class="alert alert-danger" role="alert" th:if="${emptyEK == false}">EK cant be empty</div>
+                <input class="form-control" type="text" name="EK" th:value="${task.EK}"/>
             </div>
-            <div th:if="${emptyEK == false}">EK cant be empty</div>
             <br>
-            <button type="submit">Edit task</button>
+            <button class="btn btn-primary" type="submit">Edit task</button>
         </form>
     </div>
 </div>

@@ -34,9 +34,13 @@ public class InternController {
 
     @RequestMapping(value="/newIntern")
     public String newIntern(Model model,
-                            @RequestParam(value="messages", required=false, defaultValue = "!empty") Set<String> messages,
-                            @RequestParam(required=false, defaultValue = "true") boolean checkIfTheEmailIsUnique,
-                            @RequestParam(required=false, defaultValue = "true") boolean checkCorrectRange) throws NullPointerException{
+                            @RequestParam(value="messages",
+                                    required=false,
+                                    defaultValue = "!empty") Set<String> messages,
+                            @RequestParam(required=false,
+                                    defaultValue = "true") boolean checkIfTheEmailIsUnique,
+                            @RequestParam(required=false,
+                                    defaultValue = "true") boolean checkCorrectRange) throws NullPointerException{
         try {
             model.addAttribute("messages", messages);
             model.addAttribute("checkIfTheEmailIsUnique", checkIfTheEmailIsUnique);
@@ -64,7 +68,8 @@ public class InternController {
                                      @RequestParam(defaultValue = "0") int hoursPerWeek,
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
-                                     ModelMap model) throws ConstraintViolationException, NullPointerException, MethodArgumentTypeMismatchException, NumberFormatException {
+                                     ModelMap model) throws ConstraintViolationException,
+            NullPointerException, MethodArgumentTypeMismatchException, NumberFormatException {
         try {
             boolean checkCorrectRange = internService.checkCorrectRange(internshipTime[0], internshipTime[1]);
             boolean checkIfTheEmailIsUnique = internService.checkIfTheEmailIsUnique(email);
@@ -138,8 +143,11 @@ public class InternController {
     @RequestMapping("/editIntern/{id}")
     public String editIntern(@PathVariable ObjectId id,
                              Model model,
-                             @RequestParam(value="messages", required=false, defaultValue = "!empty") Set<String> messages,
-                             @RequestParam(required=false, defaultValue = "true") boolean checkCorrectRange) throws NullPointerException{
+                             @RequestParam(value="messages",
+                                     required=false,
+                                     defaultValue = "!empty") Set<String> messages,
+                             @RequestParam(required=false,
+                                     defaultValue = "true") boolean checkCorrectRange) throws NullPointerException{
         Intern intern = internService.findByid(id);
         try {
             model.addAttribute("messages", messages);
@@ -169,11 +177,6 @@ public class InternController {
                                      ModelMap model){
         try {
             boolean checkCorrectRange = internService.checkCorrectRange(internshipTime[0], internshipTime[1]);
-//            boolean checkIfTheEmailIsUnique = internService.checkIfTheEmailIsUnique(email);
-//            if (!checkIfTheEmailIsUnique) {
-//                model.addAttribute("checkIfTheEmailIsUnique", checkIfTheEmailIsUnique);
-//                return new ModelAndView("redirect:/editIntern/" + _id, model);
-//            }
             if (!checkCorrectRange) {
                 model.addAttribute("checkCorrectRange",checkCorrectRange);
                 return new ModelAndView("redirect:/editIntern/" + _id, model);
@@ -195,7 +198,6 @@ public class InternController {
         catch (NullPointerException n){
             return new ModelAndView("redirect:/newIntern");
         }
-
     }
 
     @RequestMapping("/preReport/{email}/{check}")
@@ -228,6 +230,4 @@ public class InternController {
             return "redirect:/preReport/" + email;
         }
     }
-
-
 }

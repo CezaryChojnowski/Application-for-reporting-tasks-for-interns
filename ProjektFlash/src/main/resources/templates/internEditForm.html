@@ -5,50 +5,51 @@
       layout:decorator="default">
 <head>
     <title>Edit intern</title>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-<div>
-    <div>
-        <form action="/updateIntern">
-            <div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<div  align="center" >
+    <div class="form-group">
+        <form style="width: 20%" action="/updateIntern">
+            <div class="form-group">
                 <label>id:</label>
-                <input type="text" name="_id" th:value="${intern._id}" readonly="readonly"/>
+                <input class="form-control-plaintext" type="text" name="_id" th:value="${intern._id}" readonly/>
             </div>
-
-            <div>
+            <div class="form-group">
                 <label>First name:</label>
-                <input type="text" name="firstName" th:value="${intern.firstName}" />
+                <div class="alert alert-danger" role="alert" th:if="${#sets.contains(messages, 'firstName')}">Firstname can't be empty</div>
+                <input class="form-control"  type="text" name="firstName" th:value="${intern.firstName}" />
             </div>
-                <div th:if="${#sets.contains(messages, 'firstName')}">Firstname can't be empty</div>
             <div class="form-group">
                 <label>Surname:</label>
-                <input type="text" name="surname" th:value="${intern.surname}"/>
-                <div th:if="${#sets.contains(messages, 'surname')}">Surname can't be empty</div>
+                <div class="alert alert-danger" role="alert" th:if="${#sets.contains(messages, 'surname')}">Surname can't be empty</div>
+                <input class="form-control"  type="text" name="surname" th:value="${intern.surname}"/>
             </div>
             <div class="form-group">
                 <label>School:</label>
-                <input type="text" name="school" th:value="${intern.school}"/>
+                <div class="alert alert-danger" role="alert" th:if="${#sets.contains(messages, 'school')}">School can't be empty</div>
+                <input class="form-control"  type="text" name="school" th:value="${intern.school}"/>
             </div>
-            <div th:if="${#sets.contains(messages, 'school')}">School can't be empty</div>
             <div class="form-group">
                 <label>Email:</label>
-                <input type="text" name="email" th:value="${intern.email}" readonly="readonly"/>
+                <input class="form-control-plaintext"  type="text" name="email" th:value="${intern.email}" readonly/>
             </div>
             <div class="form-group">
                 <label>Date start:</label>
-                <input type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}"/>
+                <input class="form-control"  type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}"/>
             </div>
             <div class="form-group">
                 <label>Date finish:</label>
-                <input type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}"/>
+                <div class="alert alert-danger" role="alert" th:if="${checkCorrectRange == false}">Incorrect range</div>
+                <input class="form-control"  type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}"/>
             </div>
-            <div th:if="${checkCorrectRange == false}">Incorrect range</div>
             <div class="form-group">
                 <label>Hours per week:</label>
-                <input type="text" name="hoursPerWeek" th:value="${intern.hoursPerWeek}"/>
+                <div class="alert alert-danger" role="alert" th:if="${#sets.contains(messages, 'hoursPerWeek')}"> Wrong value - range between 1 and 40 </div>
+                <input class="form-control"  type="text" name="hoursPerWeek" th:value="${intern.hoursPerWeek}"/>
             </div>
-            <div th:if="${#sets.contains(messages, 'hoursPerWeek')}"> Wrong value - range between 1 and 40 </div>
-            <button type="submit">Update</button>
+            <button class="btn btn-primary" type="submit">Update</button>
         </form>
     </div>
 </div>
