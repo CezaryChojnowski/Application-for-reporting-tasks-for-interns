@@ -12,11 +12,11 @@
 <div align="center" >
     <div class="form-group">
         <form style="width: 20%" action="/updateTask">
-            <div>
+            <div style="display: none;">
                 <label>Email:</label>
                 <input class="form-control-plaintext" type="text" name="email" th:value="${intern.email}" readonly/>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: none;">
                 <label>ID Task:</label>
                 <input class="form-control-plaintext" type="text" name="_idTask" th:value="${task._idTask}" readonly/>
             </div>

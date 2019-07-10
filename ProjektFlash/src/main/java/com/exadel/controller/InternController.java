@@ -106,7 +106,7 @@ public class InternController {
         return "intern";
     }
 
-    @RequestMapping(value="/details/{email}")
+    @RequestMapping(value="/details/{email}" , method = RequestMethod.GET)
     public String details(@PathVariable("email") String email,
                           Model model)throws  NullPointerException{
         boolean check = true;
@@ -182,7 +182,7 @@ public class InternController {
                 return new ModelAndView("redirect:/editIntern/" + _id, model);
             }
             internService.update(_id, firstName, surname, school, email, hoursPerWeek, internshipTime);
-            return new ModelAndView("redirect:/getAllIntern");
+            return new ModelAndView("redirect:/details/" + email);
         }
         catch (ConstraintViolationException c){
             Set<ConstraintViolation<?>> constraintViolations = c.getConstraintViolations();
@@ -191,7 +191,6 @@ public class InternController {
                     .map(constraintViolation -> String.format("%s", constraintViolation.getPropertyPath(),
                             constraintViolation.getInvalidValue(), constraintViolation.getMessage()))
                     .collect(Collectors.toList()));
-            Iterator<String> it = messages.iterator();
             model.addAttribute("messages", messages);
             return new ModelAndView("redirect:/editIntern/" + _id, model);
         }
