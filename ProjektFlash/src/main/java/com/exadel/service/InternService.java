@@ -201,8 +201,6 @@ public class InternService {
 
             Font mainFont = FontFactory.getFont("Arial", 10, BaseColor.BLACK);
 
-
-
             Paragraph paragraph = new Paragraph(intern.getFirstName() + " " + intern.getSurname(), mainFont);
             paragraph.setAlignment(Element.ALIGN_LEFT);
             paragraph.setIndentationLeft(50);
@@ -257,6 +255,8 @@ public class InternService {
             ek.setExtraParagraphSpace(5f);
             table.addCell(ek);
 
+            int totalHourseInTheRange = 0;
+
             for (Task printTask : taskResult) {
                 Date dateTemp = printTask.getDate();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
@@ -297,7 +297,41 @@ public class InternService {
                 ekValue.setBackgroundColor(BaseColor.WHITE);
                 ekValue.setExtraParagraphSpace(5f);
                 table.addCell(ekValue);
+
+                totalHourseInTheRange = totalHourseInTheRange + printTask.getHours();
+
             }
+
+            PdfPCell total = new PdfPCell(new Paragraph("Total: ", tableBody));
+            total.setBorderColor(BaseColor.BLACK);
+            total.setPadding(10);
+            total.setHorizontalAlignment(Element.ALIGN_CENTER);
+            total.setVerticalAlignment(Element.ALIGN_CENTER);
+            total.setBackgroundColor(BaseColor.GRAY);
+            total.setExtraParagraphSpace(5f);
+            table.addCell(total);
+
+            PdfPCell totalValue = new PdfPCell(new Paragraph(String.valueOf(totalHourseInTheRange), tableBody));
+            totalValue.setBorderColor(BaseColor.BLACK);
+            totalValue.setPadding(10);
+            totalValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+            totalValue.setVerticalAlignment(Element.ALIGN_CENTER);
+            totalValue.setBackgroundColor(BaseColor.GRAY);
+            totalValue.setExtraParagraphSpace(5f);
+            table.addCell(totalValue);
+
+            PdfPCell temp = new PdfPCell(new Paragraph(" ", tableBody));
+            temp.setColspan(2);
+            temp.setBorderColor(BaseColor.BLACK);
+            temp.setPadding(10);
+            temp.setHorizontalAlignment(Element.ALIGN_CENTER);
+            temp.setVerticalAlignment(Element.ALIGN_CENTER);
+            temp.setBackgroundColor(BaseColor.WHITE);
+            temp.setExtraParagraphSpace(5f);
+            temp.setBorder(Rectangle.NO_BORDER);
+            table.addCell(temp);
+
+
             document.add(table);
             document.close();
             writer.close();
