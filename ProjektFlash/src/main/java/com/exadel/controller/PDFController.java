@@ -5,8 +5,10 @@ import com.exadel.model.Task;
 import com.exadel.service.InternService;
 import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -29,14 +31,14 @@ public class PDFController {
     @Autowired
     ServletContext servletContext;
 
-    @GetMapping("/createPdf")
+    @GetMapping("/createPdf/{email}/{startDate}/{finishDate}")
     public void createPDf(HttpServletRequest request,
-                          HttpServletResponse response
+                          HttpServletResponse response,
+                          @PathVariable("email") String email,
+                          @PathVariable(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                          @PathVariable(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate
     ) throws FileNotFoundException, DocumentException, ParseException {
-        String email = "abcd@gmail.com";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = format.parse("2019-07-03");
-        Date finishDate = format.parse("2019-07-14");
         Intern intern = internService.findInternByEmail(email);
         List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
         boolean isFlag = internService.createPdf(intern, taskResult, servletContext, request, response);

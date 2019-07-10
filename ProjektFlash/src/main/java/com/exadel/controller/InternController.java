@@ -218,6 +218,8 @@ public class InternController {
         try{
             Intern intern = internService.findInternByEmail(email);
             List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
+            model.addAttribute("startDate", startDate);
+            model.addAttribute("finishDate", finishDate);
             for (Task t: taskResult) {
                 totalHourseInTheRange = totalHourseInTheRange + t.getHours();
             }
