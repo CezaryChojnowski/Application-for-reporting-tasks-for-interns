@@ -1,11 +1,12 @@
 package com.exadel.controller;
 
+import com.exadel.model.Intern;
 import com.exadel.model.Task;
 import com.exadel.service.InternService;
 import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ public class PDFController {
     @Autowired
     ServletContext servletContext;
 
-    @RequestMapping("/createPdf")
+    @GetMapping("/createPdf")
     public void createPDf(HttpServletRequest request,
                           HttpServletResponse response
     ) throws FileNotFoundException, DocumentException, ParseException {
@@ -36,9 +37,9 @@ public class PDFController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = format.parse("2019-07-03");
         Date finishDate = format.parse("2019-07-14");
+        Intern intern = internService.findInternByEmail(email);
         List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
-        System.out.println(taskResult.size());
-        boolean isFlag = internService.createPdf(taskResult, servletContext, request, response);
+        boolean isFlag = internService.createPdf(intern, taskResult, servletContext, request, response);
         if(isFlag){
             String fullPath = request.getServletContext().getRealPath("/resources/reports/"+"interns"+".pdf");
             filedownload(fullPath, response, "interns.pdf");

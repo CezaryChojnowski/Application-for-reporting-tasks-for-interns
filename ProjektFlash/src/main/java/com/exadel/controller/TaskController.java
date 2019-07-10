@@ -57,8 +57,6 @@ public class TaskController {
             boolean checkIfTheTimeIsInTheLimit = internService.checkIfTheTimeIsInTheLimit(hours);
             boolean emptyTask = !task.isEmpty();
             boolean emptyEK = !EK.isEmpty();
-            System.out.println(emptyTask);
-            System.out.println(emptyEK);
             if((checkIfTheTaskIsInTheRange==false) || (checkIfTheTimeIsInTheLimit==false) || emptyTask==false || emptyEK==false){
                 model.addAttribute("emptyTask", emptyTask);
                 model.addAttribute("emptyEK", emptyEK);
@@ -102,8 +100,6 @@ public class TaskController {
         model.addAttribute("emptyEK", emptyEK);
         model.addAttribute("enterDate", enterDate);
         model.addAttribute("intern", intern);
-        model.addAttribute("task", task);
-        System.out.println(_idTask);
         return "taskEdit.html";
     }
 

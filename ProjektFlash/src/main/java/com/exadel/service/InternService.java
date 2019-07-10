@@ -106,7 +106,6 @@ public class InternService {
         for (Task t: tasks) {
             if(t.get_idTask().equals(_idTask)){
                 t.setDate(date);
-                System.out.println(t.getTask());
                 t.setHours(hours);
                 t.setTask(task);
                 t.setEK(EK);
@@ -187,23 +186,25 @@ public class InternService {
         return false;
     }
 
-    public boolean createPdf(List<Task> taskResult, ServletContext context, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, DocumentException {
+    public boolean createPdf(Intern intern, List<Task> taskResult, ServletContext context, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, DocumentException {
         Document document = new Document(PageSize.A4, 15,15,45,30);
         try {
-            String filePath = context.getRealPath("/response/reports");
+            String filePath = context.getRealPath("/resources/reports");
             File file = new File(filePath);
             boolean exist = new File(filePath).exists();
             if (!exist) {
-                new File(filePath).mkdir();
+                new File(filePath).mkdirs();
             }
 
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file + "/" + "interns" + ".pdf"));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file + "/" + "interns.pdf"));
             document.open();
 
             Font mainFont = FontFactory.getFont("Arial", 10, BaseColor.BLACK);
 
-            Paragraph paragraph = new Paragraph("Raport", mainFont);
-            paragraph.setAlignment(Element.ALIGN_CENTER);
+
+
+            Paragraph paragraph = new Paragraph(intern.getFirstName() + " " + intern.getSurname(), mainFont);
+            paragraph.setAlignment(Element.ALIGN_LEFT);
             paragraph.setIndentationLeft(50);
             paragraph.setIndentationRight(50);
             paragraph.setSpacingAfter(10);
@@ -217,7 +218,7 @@ public class InternService {
             Font tableHeader = FontFactory.getFont("Arial", 10, BaseColor.BLACK);
             Font tableBody = FontFactory.getFont("Arial", 9, BaseColor.BLACK);
 
-            float[] columnWidths = {2f, 2f, 2f, 2f};
+            float[] columnWidths = {1f, 1f, 5f, 1f};
             table.setWidths(columnWidths);
 
             PdfPCell date = new PdfPCell(new Paragraph("Date", tableHeader));
@@ -229,7 +230,7 @@ public class InternService {
             date.setExtraParagraphSpace(5f);
             table.addCell(date);
 
-            PdfPCell hours = new PdfPCell(new Paragraph("hours", tableHeader));
+            PdfPCell hours = new PdfPCell(new Paragraph("Hours", tableHeader));
             hours.setBorderColor(BaseColor.BLACK);
             hours.setPadding(10);
             hours.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -300,10 +301,8 @@ public class InternService {
             document.add(table);
             document.close();
             writer.close();
-            System.out.println("Udało się");
             return true;
         }catch (Exception e){
-            System.out.println("Nie udało się");
             return false;
         }
     }
