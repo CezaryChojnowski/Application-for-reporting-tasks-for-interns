@@ -7,13 +7,12 @@
     <title>Intern List</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
-<p align="right"><a href="/getAllIntern">Back to interns list</a></p>
 <body>
+<a align="right" class="btn btn-light" href="/getAllIntern">Back to interns list</a>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <div class="container-fluid">
     <div class="row">
     <div class="col-md-12">
-        <h2>Details</h2>
         <div style="margin-top:20px">
             <table class="table table-striped table-bordered" style="width: 100%">
                 <thead>
@@ -53,8 +52,8 @@
                     <td th:text="${task.getHours()}"></td>
                     <td th:text="${task.getTask()}"></td>
                     <td th:text="${task.getEK()}"></td>
-                    <td><a th:href="@{/deleteTask/{email}/{_idTask}(_idTask=${task.get_idTask()}, email=${intern.email})}">Delete</a></td>
-                    <td><a th:href="@{/editTask/{email}/{_idTask}(_idTask=${task.get_idTask()}, email=${intern.email})}">Edit</a></td>
+                    <td><a class="btn btn-danger" th:href="@{/deleteTask/{email}/{_idTask}(_idTask=${task.get_idTask()}, email=${intern.email})}">Delete</a></td>
+                    <td><a class="btn btn-primary" th:href="@{/editTask/{email}/{_idTask}(_idTask=${task.get_idTask()}, email=${intern.email})}">Edit</a></td>
                 </tr>
                 </tbody>
                 <td>Total: </td>
@@ -63,8 +62,8 @@
         </div>
 
 
-        <p><a th:href="@{/newTask/{email}(email=${intern.email})}">New task</a></p>
-        <p><a th:href="@{/preReport/{email}/{check}(email=${intern.email}, check=${EmptyTasksList})}">Raport</a></p>
+        <a class="btn btn-dark" th:href="@{/newTask/{email}(email=${intern.email})}">New task</a>
+        <a class="btn btn-info" th:href="@{/preReport/{email}/{check}(email=${intern.email}, check=${EmptyTasksList})}">Raport</a>
     </div>
 </div>
 </body>

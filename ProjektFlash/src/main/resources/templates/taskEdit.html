@@ -43,7 +43,8 @@
                 <input class="form-control" type="text" name="EK" th:value="${task.EK}"/>
             </div>
             <br>
-            <button class="btn btn-primary" type="submit">Edit task</button>
+            <button class="btn btn-success" type="submit">Edit task</button>
+            <a th:href="@{/details/{email}(email=${intern.email})}" class="btn btn-danger">Cancel</a>
         </form>
     </div>
 </div>

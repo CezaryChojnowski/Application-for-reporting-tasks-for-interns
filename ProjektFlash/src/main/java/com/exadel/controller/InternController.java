@@ -212,10 +212,10 @@ public class InternController {
     public String preReport(@RequestParam("email") String email,
                             @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                             @RequestParam(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate,
-                            Model model) throws  NullPointerException{
-        boolean checkCorrectRange = internService.checkCorrectRange(startDate,finishDate);
-        int totalHourseInTheRange = 0;
+                            Model model) throws NullPointerException{
         try{
+            boolean checkCorrectRange = internService.checkCorrectRange(startDate,finishDate);
+            int totalHourseInTheRange = 0;
             Intern intern = internService.findInternByEmail(email);
             List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
             model.addAttribute("startDate", startDate);
@@ -230,8 +230,8 @@ public class InternController {
                 return "redirect:/preReport/" + email +"/" + checkCorrectRange;
             }
             return "reportTaskBeetwenTwoDates";
-        }catch (NullPointerException e){
-            return "redirect:/preReport/" + email;
+        }catch (NullPointerException n){
+            return "redirect:/preReport/" + email + "/" + true;
         }
     }
 }

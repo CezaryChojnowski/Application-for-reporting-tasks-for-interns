@@ -99,6 +99,7 @@ public class TaskController {
         model.addAttribute("emptyTask", emptyTask);
         model.addAttribute("emptyEK", emptyEK);
         model.addAttribute("enterDate", enterDate);
+        model.addAttribute("task", task);
         model.addAttribute("intern", intern);
         return "taskEdit.html";
     }

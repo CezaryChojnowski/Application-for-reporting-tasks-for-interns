@@ -39,7 +39,8 @@
                     <div class="alert alert-danger" role="alert" th:if="${emptyEK == false}">EK cant be empty</div>
                     <input class="form-control" type="text" name="EK" />
                 </div>
-                <button class="btn btn-primary" type="submit">Report task</button>
+                <button class="btn btn-success" type="submit">Report task</button>
+                <a th:href="@{/details/{email}(email=${intern.email})}" class="btn btn-danger">Cancel</a>
             </form>
         </div>
     </div>

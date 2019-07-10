@@ -48,7 +48,8 @@
                 <div class="alert alert-danger" role="alert" th:if="${#sets.contains(messages, 'hoursPerWeek')}"> Wrong value - range between 1 and 40 </div>
                 <input class="form-control" type="number" name="hoursPerWeek" />
             </div>
-            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-success" type="submit">Add</button>
+            <input value="Cancel" type="button" class="btn btn-danger" onclick="location.href='/getAllIntern';"/>
         </form>
     </div>
 </div>

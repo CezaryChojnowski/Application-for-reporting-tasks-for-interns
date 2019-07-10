@@ -39,7 +39,8 @@
             </div>
             <input class="form-control" type="date" name="finishDate" th:min="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}" th:max="${#dates.format(intern.internshipTime[1], 'yyyy-MM-dd')}"/>
             </div>
-            <button class="btn btn-primary" type="submit">Report</button>
+            <button class="btn btn-success" type="submit">Report</button>
+            <a th:href="@{/details/{email}(email=${intern.email})}" class="btn btn-danger">Cancel</a>
     </div>
     </form>
     </div>

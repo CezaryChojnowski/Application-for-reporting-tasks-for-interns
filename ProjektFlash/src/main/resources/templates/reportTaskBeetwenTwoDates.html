@@ -38,6 +38,7 @@
                                 <td align="center">Total: </td>
                                 <td align="center" th:text="${totalHourseInTheRange}"></td>
                             </table>
+            <a th:href="@{/preReport/{email}/{check}(email=${intern.email}, check='true')}" class="btn btn-danger">Cancel</a>
             </div>
         </div>
     </div>
