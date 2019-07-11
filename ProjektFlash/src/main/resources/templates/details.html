@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-<div th:if="${intern.role=='admin'}">
-<a align="right" class="btn btn-light" href="/getAllIntern">Back to interns list</a>
+<div>
+    <div class="btn btn-dark"><a align="right" class="btn btn-dark" href="/logout">Logout</a></div>
+    <div class="btn btn-light"><a align="left" class="btn btn-light" href="/getAllIntern">Back to interns list</a></div>
 </div>
-
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <div class="container-fluid">
     <div class="row">
@@ -27,7 +27,7 @@
                     <th>Hours per week</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody >
                     <td th:text="${intern.firstName}"></td>
                     <td th:text="${intern.surname}"></td>
                     <td th:text="${intern.school}"></td>

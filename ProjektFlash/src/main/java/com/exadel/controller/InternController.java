@@ -153,7 +153,7 @@ public class InternController {
         return new ModelAndView("redirect:/getAllIntern");
     }
 
-    @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
+//    @PreAuthorize("#id == authentication.getPrincipal().get_id() or hasAuthority('admin')")
     @RequestMapping("/editIntern/{id}")
     public String editIntern(@PathVariable ObjectId id,
                              Model model,

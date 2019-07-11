@@ -15,8 +15,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> findByEmail(String email){
         return userRepository.findByEmail(email);
@@ -37,7 +37,7 @@ public class UserService {
     public User createUser(String login, String pass, String email, String phone){
         User user = new User();
         user.setLogin(login);
-        user.setPass(bCryptPasswordEncoder.encode(pass));
+//        user.setPass(bCryptPasswordEncoder.encode(pass));
         user.setActive(true);
         String[] role = {"user"};
         user.setRole(role);
