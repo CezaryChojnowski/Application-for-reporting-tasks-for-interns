@@ -3,6 +3,7 @@ package com.exadel.service;
 import com.exadel.model.Intern;
 import com.exadel.repository.InternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,19 +29,16 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Not Found");
         }
         else {
-            List<GrantedAuthority> authorities = getUserAuthority(intern.getRole());
+            GrantedAuthority authorities = getUserAuthority(intern.getRole());
             return buildUserForAuthentication(intern, authorities);
         }
     }
 
-    private List<GrantedAuthority> getUserAuthority(String userRole) {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add(new SimpleGrantedAuthority(Arrays.toString(new String[]{userRole})));
-        System.out.println(roles);
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
-        return grantedAuthorities;
+    private GrantedAuthority getUserAuthority(String userRole) {
+        GrantedAuthority roles = new SimpleGrantedAuthority(userRole);
+        return roles;
     }
-    private UserDetails buildUserForAuthentication(Intern intern, List<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(intern.getEmail(), intern.getPassword(), authorities);
+    private UserDetails buildUserForAuthentication(Intern intern, GrantedAuthority authorities) {
+        return new org.springframework.security.core.userdetails.User(intern.getEmail(), intern.getPassword(), Collections.singleton(authorities));
     }
 }

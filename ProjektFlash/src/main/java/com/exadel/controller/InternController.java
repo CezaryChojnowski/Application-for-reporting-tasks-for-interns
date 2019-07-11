@@ -7,7 +7,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,6 +74,7 @@ public class InternController {
                                      @RequestParam String surname,
                                      @RequestParam String school,
                                      @RequestParam String email,
+                                     @RequestParam String pass,
                                      @RequestParam(defaultValue = "0") int hoursPerWeek,
                                      @RequestParam(value="internshipTime[]")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd") Date[] internshipTime,
@@ -91,7 +91,7 @@ public class InternController {
                 model.addAttribute("checkCorrectRange",checkCorrectRange);
                 return new ModelAndView("redirect:/newIntern", model);
             }
-            internService.createIntern(firstName, surname, school, email, hoursPerWeek, internshipTime);
+            internService.createIntern(firstName, surname, school, email, pass, hoursPerWeek, internshipTime);
             return new ModelAndView("redirect:/getAllIntern");
         }
         catch (ConstraintViolationException c){

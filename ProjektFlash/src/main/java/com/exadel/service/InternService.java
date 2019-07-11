@@ -51,7 +51,7 @@ public class InternService {
         return internRepository.findTasksByid(id);
     }
 
-    public Intern createIntern(String firstName, String surname, String school, String email, int hoursPerWeek, Date[] internshipTime){
+    public Intern createIntern(String firstName, String surname, String school, String email, String pass, int hoursPerWeek, Date[] internshipTime){
         Intern intern = new Intern();
         intern.setFirstName(firstName);
         intern.setSurname(surname);
@@ -62,7 +62,7 @@ public class InternService {
         intern.setHoursPerWeek(hoursPerWeek);
         List<Task> emptyTasksList = new ArrayList<Task>();
         intern.setTasks(emptyTasksList);
-        intern.setPassword(bCryptPasswordEncode.encode("test"));
+        intern.setPassword(bCryptPasswordEncode.encode(pass));
         return internRepository.save(intern);
     }
 
