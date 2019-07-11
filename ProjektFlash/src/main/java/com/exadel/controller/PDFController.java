@@ -34,7 +34,7 @@ public class PDFController {
 
 
     @GetMapping("/createPdf/{email}/{startDate}/{finishDate}")
-    @PreAuthorize("#email == authentication.principal.username")
+    @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
     public void createPDf(HttpServletRequest request,
                           HttpServletResponse response,
                           @PathVariable("email") String email,

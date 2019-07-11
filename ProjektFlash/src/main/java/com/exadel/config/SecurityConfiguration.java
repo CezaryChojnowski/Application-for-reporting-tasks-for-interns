@@ -26,6 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    CustomizeAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -38,10 +41,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/logout").permitAll()
+                .antMatchers("/**").hasAnyAuthority("admin","intern")
                 .anyRequest()
                 .authenticated()
-                .and()
-                .formLogin()
+                .and().csrf().disable()
+                .formLogin().successHandler(customizeAuthenticationSuccessHandler)
                 .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")

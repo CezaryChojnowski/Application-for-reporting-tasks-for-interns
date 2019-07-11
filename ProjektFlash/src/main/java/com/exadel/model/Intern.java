@@ -24,6 +24,7 @@ public class Intern {
     @NotEmpty
     @Email
     private String email;
+    private String password = "test";
     private String role;
     @NotEmpty
     @NotNull
@@ -48,6 +49,13 @@ public class Intern {
     }
 
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public List<Task> getTasks() {
         return tasks;

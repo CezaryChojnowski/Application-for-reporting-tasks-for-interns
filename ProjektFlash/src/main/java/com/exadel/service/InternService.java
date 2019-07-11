@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
@@ -26,6 +27,9 @@ public class InternService {
 
     @Autowired
     InternRepository internRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncode;
 
     public List<Intern> getAllIntern(){
         return internRepository.findAll();
@@ -58,6 +62,7 @@ public class InternService {
         intern.setHoursPerWeek(hoursPerWeek);
         List<Task> emptyTasksList = new ArrayList<Task>();
         intern.setTasks(emptyTasksList);
+        intern.setPassword(bCryptPasswordEncode.encode("test"));
         return internRepository.save(intern);
     }
 

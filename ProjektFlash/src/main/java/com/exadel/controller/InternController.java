@@ -41,6 +41,7 @@ public class InternController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value="/newIntern")
     public String newIntern(Model model,
                             @RequestParam(value="messages",
@@ -67,7 +68,7 @@ public class InternController {
             return "internform.html";
         }
     }
-
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value="/createIntern")
     public ModelAndView createIntern(
                                      @RequestParam String firstName,
@@ -108,7 +109,7 @@ public class InternController {
             return new ModelAndView("redirect:/newIntern");
         }
     }
-
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping("/getAllIntern")
     public String intern(Model model) {
         model.addAttribute("interns", internService.getAllIntern());
@@ -116,10 +117,10 @@ public class InternController {
         return "intern";
     }
 
-    @PreAuthorize("#email == authentication.principal.username")
+    @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
     @RequestMapping(value="/details/{email}" , method = RequestMethod.GET)
     public String details(@PathVariable("email") String email,
-                          Model model)throws  NullPointerException{
+                          Model model)throws  NullPointerException {
         boolean check = true;
         Intern intern = internService.findTasksByEmail(email);
         int totalHourse = 0;
@@ -143,7 +144,7 @@ public class InternController {
     }
 
     @RequestMapping("/delete/{email}")
-    @PreAuthorize("hasRole('[[intern]]')")
+    @PreAuthorize("hasAuthority('admin')")
     public ModelAndView delete(@PathVariable String email,
                                Model model){
         Intern intern = internService.findInternByEmail(email);
@@ -152,6 +153,7 @@ public class InternController {
         return new ModelAndView("redirect:/getAllIntern");
     }
 
+    @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
     @RequestMapping("/editIntern/{id}")
     public String editIntern(@PathVariable ObjectId id,
                              Model model,
@@ -177,6 +179,7 @@ public class InternController {
         }
     }
 
+    @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
     @RequestMapping("/updateIntern")
     public ModelAndView updateIntern(@RequestParam(required = false) ObjectId _id,
                                      @RequestParam String firstName,
@@ -211,7 +214,7 @@ public class InternController {
         }
     }
 
-    @PostAuthorize("#email == authentication.principal.username")
+    @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
     @RequestMapping("/preReport/{email}/{check}")
     public String report(@PathVariable("email") String email, @PathVariable boolean check, Model model){
         Intern intern = internService.findInternByEmail(email);
@@ -220,7 +223,7 @@ public class InternController {
         return "reportForm";
     }
 
-    @PostAuthorize("#email == authentication.principal.username")
+    @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
     @RequestMapping("/report")
     public String preReport(@RequestParam("email") String email,
                             @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
