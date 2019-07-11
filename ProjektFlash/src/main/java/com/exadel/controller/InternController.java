@@ -7,6 +7,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -31,6 +33,13 @@ public class InternController {
 
     @Autowired
     InternService internService;
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
 
     @RequestMapping(value="/newIntern")
     public String newIntern(Model model,
@@ -103,9 +112,11 @@ public class InternController {
     @RequestMapping("/getAllIntern")
     public String intern(Model model) {
         model.addAttribute("interns", internService.getAllIntern());
+
         return "intern";
     }
 
+    @PreAuthorize("#email == authentication.principal.username")
     @RequestMapping(value="/details/{email}" , method = RequestMethod.GET)
     public String details(@PathVariable("email") String email,
                           Model model)throws  NullPointerException{
@@ -132,6 +143,7 @@ public class InternController {
     }
 
     @RequestMapping("/delete/{email}")
+    @PreAuthorize("hasRole('[[intern]]')")
     public ModelAndView delete(@PathVariable String email,
                                Model model){
         Intern intern = internService.findInternByEmail(email);
@@ -199,6 +211,7 @@ public class InternController {
         }
     }
 
+    @PostAuthorize("#email == authentication.principal.username")
     @RequestMapping("/preReport/{email}/{check}")
     public String report(@PathVariable("email") String email, @PathVariable boolean check, Model model){
         Intern intern = internService.findInternByEmail(email);
@@ -207,6 +220,7 @@ public class InternController {
         return "reportForm";
     }
 
+    @PostAuthorize("#email == authentication.principal.username")
     @RequestMapping("/report")
     public String preReport(@RequestParam("email") String email,
                             @RequestParam(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,

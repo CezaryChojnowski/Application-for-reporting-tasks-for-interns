@@ -7,6 +7,7 @@ import com.exadel.service.TaskService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -25,6 +26,7 @@ public class TaskController {
     @Autowired
     private InternService internService;
 
+    @PostAuthorize("#email == authentication.principal.username")
     @RequestMapping("/newTask/{email}")
     public String newTask(@PathVariable("email") String email,
                           Model model,
@@ -44,6 +46,7 @@ public class TaskController {
         return "reportingTask.html";
     }
 
+    @PostAuthorize("#email == authentication.principal.username")
     @RequestMapping("/createTask")
     public ModelAndView createTask(@RequestParam(required = false) String email,
                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
@@ -74,6 +77,7 @@ public class TaskController {
         }
     }
 
+    @PostAuthorize("#email == authentication.principal.username")
     @RequestMapping("/deleteTask/{email}/{_idTask}")
     public ModelAndView deleteTask(@PathVariable("email") String email,
                                    @PathVariable("_idTask") ObjectId _idTask, Model model){
@@ -83,6 +87,7 @@ public class TaskController {
         return new ModelAndView("redirect:/details/" + email);
     }
 
+    @PostAuthorize("#email == authentication.principal.username")
     @RequestMapping("/editTask/{email}/{_idTask}")
     public String editIntern(@PathVariable String email,
                              @PathVariable ObjectId _idTask,
@@ -104,6 +109,7 @@ public class TaskController {
         return "taskEdit.html";
     }
 
+    @PostAuthorize("#email == authentication.principal.username")
     @RequestMapping("/updateTask")
     public ModelAndView updateIntern(@RequestParam(required = false) String email,
                                      @RequestParam(required = false) ObjectId _idTask,

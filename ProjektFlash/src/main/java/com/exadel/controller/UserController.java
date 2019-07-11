@@ -60,22 +60,30 @@ public class UserController {
         return true;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        return modelAndView;
-    }
+//    @RequestMapping(value = "/login", method = RequestMethod.GET)
+//    public ModelAndView login() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("login");
+//        return modelAndView;
+//    }
 
-    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
-    public ModelAndView welcome() {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(authentication.getName());
-        modelAndView.addObject("login", "Welcome " + user.getLogin() + " | Phone: " + user.getContact().getPhone() + " | Email: " + user.getContact().getEmail());
-        modelAndView.setViewName("welcome");
-        return modelAndView;
-    }
-
-
+//    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+//    public ModelAndView welcome() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User user = userService.getByLogin(authentication.getName());
+//        modelAndView.addObject("login", "Welcome " + user.getLogin() + " | Phone: " + user.getContact().getPhone() + " | Email: " + user.getContact().getEmail());
+//        modelAndView.setViewName("welcome");
+//        return modelAndView;
+//    }
+//
+//    @RequestMapping(value = {"/welcome2"}, method = RequestMethod.GET)
+//    public ModelAndView welcome2() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User user = userService.getByLogin(authentication.getName());
+//        modelAndView.addObject("login", "Welcome2 " + user.getLogin() + " | Phone: " + user.getContact().getPhone() + " | Email: " + user.getContact().getEmail());
+//        modelAndView.setViewName("welcome2");
+//        return modelAndView;
+//    }
 }

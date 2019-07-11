@@ -1,7 +1,7 @@
 package com.exadel.service;
 
-import com.exadel.model.User;
-import com.exadel.repository.UserRepository;
+import com.exadel.model.Intern;
+import com.exadel.repository.InternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,30 +17,30 @@ import java.util.*;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private InternRepository InternRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userRepository.findByLogin(login);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Intern intern = InternRepository.findInternByEmail(email);
 
 
-        if(user == null) {
+        if(intern == null) {
             throw new UsernameNotFoundException("Not Found");
         }
         else {
-            List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
-            return buildUserForAuthentication(user, authorities);
+            List<GrantedAuthority> authorities = getUserAuthority(intern.getRole());
+            return buildUserForAuthentication(intern, authorities);
         }
     }
 
-    private List<GrantedAuthority> getUserAuthority(String[] userRole) {
+    private List<GrantedAuthority> getUserAuthority(String userRole) {
         Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add(new SimpleGrantedAuthority(Arrays.toString(userRole)));
+        roles.add(new SimpleGrantedAuthority(Arrays.toString(new String[]{userRole})));
         System.out.println(roles);
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
         return grantedAuthorities;
     }
-    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPass(), authorities);
+    private UserDetails buildUserForAuthentication(Intern intern, List<GrantedAuthority> authorities) {
+        return new org.springframework.security.core.userdetails.User(intern.getEmail(), intern.getPassword(), authorities);
     }
 }
