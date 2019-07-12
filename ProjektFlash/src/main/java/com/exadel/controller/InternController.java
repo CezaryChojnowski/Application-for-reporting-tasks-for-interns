@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 
 @Controller
@@ -180,8 +182,10 @@ public class InternController {
     @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
     @RequestMapping(value="/details/{email}" , method = RequestMethod.GET)
     public String details(@PathVariable("email") String email,
-                          Model model)throws  NullPointerException {
-
+                          @RequestParam(required=false,
+                                defaultValue = "true") boolean somethingItsWrong,
+                          Model model) throws NullPointerException, InterruptedException {
+        model.addAttribute("somethingItsWrong", somethingItsWrong);
             SecurityContext securityContext = SecurityContextHolder.getContext();
             Authentication authentication = securityContext.getAuthentication();
             String userRole = null;
@@ -272,6 +276,7 @@ public class InternController {
                                    @RequestParam String newPassword2, ModelMap model){
         boolean theSame = true;
         boolean tempCurrentPassword = true;
+        boolean somethingItsWrong = false;
         Intern intern = internService.findInternByEmail(email);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if(encoder.matches(currentPassword, intern.getPassword())){
@@ -288,7 +293,8 @@ public class InternController {
             return new ModelAndView("redirect:/changePassword/" + intern.getEmail(), model);
         }
         internService.changePassword(email,currentPassword,newPassword, newPassword2);
-        return new ModelAndView("redirect:/details/" + email);
+        model.addAttribute("somethingItsWrong", somethingItsWrong);
+        return new ModelAndView("redirect:/details/" + email, model);
     }
 
     @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")

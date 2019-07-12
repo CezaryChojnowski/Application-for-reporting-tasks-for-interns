@@ -37,6 +37,7 @@
                 </tbody>
             </table>
         </div>
+        <div class="alert alert-success" role="alert" th:if="${!somethingItsWrong}">Password has been changed</div>
         <a class="btn btn-primary" th:href="@{/editIntern/{_id}(_id=${intern._id})}">Edit</a>
         <a class="btn btn-secondary" th:href="@{/changePassword/{email}(email=${intern.email})}">Change password</a>
         <br><br>
@@ -66,7 +67,6 @@
                 <td th:text="${totalHourse}"></td>
             </table>
         </div>
-
 
         <a class="btn btn-dark" th:href="@{/newTask/{email}(email=${intern.email})}">New task</a>
         <a class="btn btn-info" th:href="@{/preReport/{email}/{check}(email=${intern.email}, check=${EmptyTasksList})}">Raport</a>

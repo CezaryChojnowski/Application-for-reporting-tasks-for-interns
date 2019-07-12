@@ -198,6 +198,84 @@ public class InternService {
         return false;
     }
 
+    public boolean checkLengthPasswordCount(String password){
+        if(password.length()>=8){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkUpperCaseCount(String password){
+        int temp = 0;
+        char[] charArray = password.toCharArray();
+        for(int i=0; i< charArray.length; i++){
+            if(Character.isLetter(charArray[i])){
+                if(Character.isUpperCase(charArray[i])){
+                    temp++;
+                    return false;
+                }
+            }
+        }
+        if(temp>=1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean checkLowerCaseCount(String password){
+        int temp = 0;
+        char[] charArray = password.toCharArray();
+        for(int i=0; i< charArray.length; i++){
+            if(Character.isLetter(charArray[i])){
+                if(Character.isLowerCase(charArray[i])){
+                    temp++;
+                }
+            }
+        }
+        if(temp>=1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean checkDigitCount(String password){
+        int temp = 0;
+        char[] charArray = password.toCharArray();
+        for(int i=0; i< charArray.length; i++){
+            if(Character.isDigit(charArray[i])){
+                temp++;
+            }
+        }
+        if(temp>=1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean checkSpecialCharacterCount(String password) {
+        int temp = 0;
+        String specialChars = "/*!@#$%^&*()\"{}_[]|\\?/<>,.";
+        for (int i = 0; i < password.length(); i++) {
+            if (specialChars.contains(password.substring(i, 1))) {
+                temp++;
+            }
+        }
+        if(temp>=1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+
     public boolean createPdf(Intern intern, List<Task> taskResult, ServletContext context, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, DocumentException {
         Document document = new Document(PageSize.A4, 15,15,45,30);
         try {
