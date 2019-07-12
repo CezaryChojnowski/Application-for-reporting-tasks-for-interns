@@ -2,7 +2,9 @@ package com.exadel.controller;
 
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
+import com.exadel.model.Token;
 import com.exadel.service.InternService;
+import com.exadel.service.TokenService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
@@ -16,17 +18,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,11 +42,53 @@ public class InternController {
     @Autowired
     InternService internService;
 
+    @Autowired
+    TokenService tokenService;
+
+    @RequestMapping(value= "/")
+    public ModelAndView home(){
+        return new ModelAndView("redirect:/login");
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login() {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws NullPointerException, ClassCastException{
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
+        try {
+            Cookie[] cookies;
+            Cookie tempCookie = new Cookie("temp", "temp");
+            response.addCookie(tempCookie);
+            cookies = request.getCookies();
+
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            Authentication authentication = securityContext.getAuthentication();
+            String userRole = null, userEmail = null;
+            if(!authentication.getPrincipal().equals("anonymousUser")) {
+                try{
+                    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                    userRole = String.valueOf(userDetails.getAuthorities());
+                    userEmail = String.valueOf(userDetails.getUsername());
+
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equalsIgnoreCase("remember-me")) {
+                            if(userRole.equals("[intern]")){
+                                return new ModelAndView("redirect:/details/" + userEmail);
+                            }
+                            if(userRole.equals("[admin]")){
+                                return new ModelAndView("redirect:/getAllIntern");
+                            }
+                        }
+                    }
+                }catch (ClassCastException c){
+                    return modelAndView;
+                }
+            }
+
+        }catch (NullPointerException e){
+            return modelAndView;
+        }
         return modelAndView;
+
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -122,7 +164,6 @@ public class InternController {
     @RequestMapping("/getAllIntern")
     public String intern(Model model) {
         model.addAttribute("interns", internService.getAllIntern());
-
         return "intern";
     }
 

@@ -10,5 +10,4 @@ public interface TaskRepository extends MongoRepository<Task, String> {
 
     @Query("{ '_id': ?0 }")
     Task findTaskByid(ObjectId id);
-
 }

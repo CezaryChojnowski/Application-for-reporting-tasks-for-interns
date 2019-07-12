@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -28,6 +30,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     CustomizeAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
+
+    @Autowired
+    PersistentTokenRepository persistentTokenRepository;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -52,7 +57,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").and().exceptionHandling();
+                .logoutSuccessUrl("/login").and().exceptionHandling()
+                .and().exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+                .and()
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository);
     }
 
         @Override

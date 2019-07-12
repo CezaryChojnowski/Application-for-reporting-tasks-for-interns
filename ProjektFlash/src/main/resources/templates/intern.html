@@ -29,7 +29,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="intern : ${interns}">
-                        <div th:if="${intern.email != 'admin'}" style="display: none;">
+                        <div th:if="${intern.role != 'admin'}" style="display: none;">
                             <td th:text="${intern.firstName}"></td>
                             <td th:text="${intern.surname}"></td>
                             <td><a class="btn btn-info" th:href="@{/details/{email}(email=${intern.email})}">Details</a></td>

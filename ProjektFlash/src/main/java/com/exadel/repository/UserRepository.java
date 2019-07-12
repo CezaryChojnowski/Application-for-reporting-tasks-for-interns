@@ -1,6 +1,5 @@
 package com.exadel.repository;
-;
-import com.exadel.model.Contact;
+
 import com.exadel.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
