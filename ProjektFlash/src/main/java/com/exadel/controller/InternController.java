@@ -2,9 +2,7 @@ package com.exadel.controller;
 
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
-import com.exadel.model.Token;
 import com.exadel.service.InternService;
-import com.exadel.service.TokenService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
@@ -14,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -41,9 +40,6 @@ public class InternController {
 
     @Autowired
     InternService internService;
-
-    @Autowired
-    TokenService tokenService;
 
     @RequestMapping(value= "/")
     public ModelAndView home(){
@@ -88,7 +84,6 @@ public class InternController {
             return modelAndView;
         }
         return modelAndView;
-
     }
 
     @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
@@ -252,6 +247,48 @@ public class InternController {
             model.addAttribute("intern", intern);
             return "internEditForm.html";
         }
+    }
+
+    @PreAuthorize("#email == authentication.principal.username")
+    @RequestMapping(value = "/changePassword/{email}")
+    public String changePassword(@PathVariable String email,
+                                 @RequestParam(required=false,
+                                         defaultValue = "true") boolean theSame,
+                                 @RequestParam(required=false,
+                                         defaultValue = "true") boolean tempCurrentPassword,
+                                 Model model){
+        Intern intern = internService.findInternByEmail(email);
+        model.addAttribute("theSame", theSame);
+        model.addAttribute("tempCurrentPassword", tempCurrentPassword);
+        model.addAttribute("intern", intern);
+        return "changePassword.html";
+    }
+
+    @PreAuthorize("#email == authentication.principal.username")
+    @RequestMapping("/changePass")
+    public ModelAndView changePass(@RequestParam String email,
+                                   @RequestParam String currentPassword,
+                                   @RequestParam String newPassword,
+                                   @RequestParam String newPassword2, ModelMap model){
+        boolean theSame = true;
+        boolean tempCurrentPassword = true;
+        Intern intern = internService.findInternByEmail(email);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(encoder.matches(currentPassword, intern.getPassword())){
+            if(newPassword.equals(newPassword2)){
+                intern.setPassword(encoder.encode(newPassword));
+            }else{
+                theSame = false;
+                model.addAttribute("theSame", theSame);
+                return new ModelAndView("redirect:/changePassword/" + intern.getEmail(), model);
+            }
+        }else{
+            tempCurrentPassword = false;
+            model.addAttribute("tempCurrentPassword", tempCurrentPassword);
+            return new ModelAndView("redirect:/changePassword/" + intern.getEmail(), model);
+        }
+        internService.changePassword(email,currentPassword,newPassword, newPassword2);
+        return new ModelAndView("redirect:/details/" + email);
     }
 
     @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")

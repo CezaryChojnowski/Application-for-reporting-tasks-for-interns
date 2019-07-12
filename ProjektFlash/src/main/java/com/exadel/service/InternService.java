@@ -145,6 +145,13 @@ public class InternService {
         }
         return taskRestult;
     }
+
+    public Intern changePassword(String email, String currentPassword, String newPassword, String newPassword2){
+        Intern intern = findInternByEmail(email);
+        intern.setPassword(bCryptPasswordEncode.encode(newPassword));
+        return internRepository.save(intern);
+    }
+
     public boolean checkCorrectRange(Date startDate, Date finishDate){
         if(startDate.after(finishDate)){
             return false;
