@@ -41,11 +41,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/logout").permitAll()
+                .antMatchers("/accessDenied").permitAll()
                 .antMatchers("/**").hasAnyAuthority("admin","intern")
                 .anyRequest()
                 .authenticated()
@@ -61,7 +62,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository);
+                .tokenRepository(persistentTokenRepository)
+                .and().exceptionHandling().accessDeniedPage("/accessDenied");
     }
 
         @Override

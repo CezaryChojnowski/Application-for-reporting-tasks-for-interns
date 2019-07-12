@@ -91,6 +91,21 @@ public class InternController {
 
     }
 
+    @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
+    public ModelAndView accesssDenied() {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("accessDenied");
+        return model;
+    }
+
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
+    public ModelAndView handleError() {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("error");
+        return model;
+    }
+
+
     @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value="/newIntern")
     public String newIntern(Model model,
