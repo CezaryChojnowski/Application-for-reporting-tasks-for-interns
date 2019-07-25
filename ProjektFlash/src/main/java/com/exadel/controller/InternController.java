@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 
 @Controller
@@ -136,6 +134,7 @@ public class InternController {
                                      @RequestParam String firstName,
                                      @RequestParam String surname,
                                      @RequestParam String school,
+                                     @RequestParam String acronym,
                                      @RequestParam String email,
                                      @RequestParam String pass,
                                      @RequestParam(defaultValue = "0") int hoursPerWeek,
@@ -154,7 +153,7 @@ public class InternController {
                 model.addAttribute("checkCorrectRange",checkCorrectRange);
                 return new ModelAndView("redirect:/newIntern", model);
             }
-            internService.createIntern(firstName, surname, school, email, pass, hoursPerWeek, internshipTime);
+            internService.createIntern(firstName, surname, school, acronym, email, pass, hoursPerWeek, internshipTime);
             return new ModelAndView("redirect:/getAllIntern");
         }
         catch (ConstraintViolationException c){
@@ -303,6 +302,7 @@ public class InternController {
                                      @RequestParam String firstName,
                                      @RequestParam String surname,
                                      @RequestParam String school,
+                                     @RequestParam String acronym,
                                      @RequestParam String email,
                                      @RequestParam(defaultValue = "0") int hoursPerWeek,
                                      @RequestParam(value="internshipTime[]")
@@ -314,7 +314,7 @@ public class InternController {
                 model.addAttribute("checkCorrectRange",checkCorrectRange);
                 return new ModelAndView("redirect:/editIntern/" + _id, model);
             }
-            internService.update(_id, firstName, surname, school, email, hoursPerWeek, internshipTime);
+            internService.update(_id, firstName, surname, school, acronym, email, hoursPerWeek, internshipTime);
             return new ModelAndView("redirect:/details/" + email);
         }
         catch (ConstraintViolationException c){

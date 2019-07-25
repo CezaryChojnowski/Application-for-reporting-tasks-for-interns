@@ -51,12 +51,13 @@ public class InternService {
         return internRepository.findTasksByid(id);
     }
 
-    public Intern createIntern(String firstName, String surname, String school, String email, String pass, int hoursPerWeek, Date[] internshipTime){
+    public Intern createIntern(String firstName, String surname, String school, String acronym, String email, String pass, int hoursPerWeek, Date[] internshipTime){
         Intern intern = new Intern();
         intern.setFirstName(firstName);
         intern.setSurname(surname);
         intern.setSchool(school);
         intern.setEmail(email);
+        intern.setAcronym(acronym);
         intern.setRole("intern");
         intern.setInternshipTime(internshipTime);
         intern.setHoursPerWeek(hoursPerWeek);
@@ -71,13 +72,14 @@ public class InternService {
         internRepository.delete(intern);
     }
 
-    public Intern update(ObjectId _id, String firstName, String surname, String school, String email, int hoursPerWeek, Date[] internshipTime){
+    public Intern update(ObjectId _id, String firstName, String surname, String school, String acronym, String email, int hoursPerWeek, Date[] internshipTime){
         Intern intern = internRepository.findByid(_id);
         intern.set_id(_id);
         intern.setFirstName(firstName);
         intern.setSurname(surname);
         intern.setSchool(school);
         intern.setEmail(email);
+        intern.setAcronym(acronym);
         intern.setRole("intern");
         intern.setInternshipTime(internshipTime);
         intern.setHoursPerWeek(hoursPerWeek);
