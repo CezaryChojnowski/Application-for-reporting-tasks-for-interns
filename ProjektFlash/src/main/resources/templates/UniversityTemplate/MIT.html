@@ -1,0 +1,31 @@
+<html>
+    <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    </head>
+
+    <body>
+    <h1>Massachusetts Institute of Technology</h1>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <p align="left" th:text="${intern.getFirstName()}"></p>
+        <table class="table table-striped table-bordered" style="width: 100%">
+             <thead>
+                  <tr>
+                      <th style="width: 15%">Date</th>
+                      <th style="width: 5%">Hours</th>
+                      <th style="width: 65%">Range of tasks performed</th>
+                      <th style="width: 15%">EK*</th>
+                  </tr>
+             </thead>
+             <tbody>
+                  <tr th:each="task : ${taskResult}">
+                      <td align="center" th:text="${#dates.format(task.getDate(), 'dd.MM.yyyy')}"></td>
+                      <td align="center" th:text="${task.getHours()}"></td>
+                      <td align="center" th:text="${task.getTask()}"></td>
+                      <td align="center" th:text="${task.getEK()}"></td>
+                  </tr>
+             </tbody>
+                      <td align="center">Total: </td>
+                      <td align="center" th:text="${totalHourseInTheRange}"></td>
+        </table>
+    </body>
+</html>
