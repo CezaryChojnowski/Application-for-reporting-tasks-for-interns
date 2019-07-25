@@ -39,6 +39,10 @@
                 <input class="form-control"  type="text" name="email" th:value="${intern.email}"/>
             </div>
             <div class="form-group">
+                <label>Acronym:</label>
+                <input class="form-control"  type="text" name="acronym" th:value="${intern.acronym}"/>
+            </div>
+            <div class="form-group">
                 <label>Date start:</label>
                 <input class="form-control"  type="date" name="internshipTime[]" th:value="${#dates.format(intern.internshipTime[0], 'yyyy-MM-dd')}"/>
             </div>

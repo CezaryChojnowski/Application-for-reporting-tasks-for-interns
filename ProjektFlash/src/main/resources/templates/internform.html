@@ -31,6 +31,11 @@
                 <input class="form-control" type="text" name="school" />
             </div>
             <div class="form-group">
+                <label>Acronym:</label>
+                <div class="alert alert-danger" role="alert" th:if="${#sets.contains(messages, 'acronym')}">Acronym can't be empty</div>
+                <input class="form-control" type="text" name="acronym" />
+            </div>
+            <div class="form-group">
                 <label>Email:</label>
                 <div class="alert alert-danger" role="alert" th:if="${checkIfTheEmailIsUnique == false}">Email is not unique</div>
                 <div class="alert alert-danger" role="alert" th:if="${#sets.contains(messages, 'email')}">Email can't be empty</div>
