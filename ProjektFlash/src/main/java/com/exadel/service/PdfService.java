@@ -31,9 +31,10 @@ public class PdfService {
             for(int i=0; i< taskResult.size(); i++){
                 totalHourseInTheRange = totalHourseInTheRange + taskResult.get(i).getHours();
             }
+            tempContext.setVariable("intern",intern );
             tempContext.setVariable("totalHourseInTheRange",totalHourseInTheRange );
         tempContext.setVariable("taskResult", taskResult);
-        String processHtml = templateEngine.process("UniversityTemplate/" + "test", tempContext);
+        String processHtml = templateEngine.process("UniversityTemplate/" + intern.getAcronym(), tempContext);
 
         OutputStream outputStream = new FileOutputStream("interns.pdf");
         ITextRenderer renderer = new ITextRenderer();
