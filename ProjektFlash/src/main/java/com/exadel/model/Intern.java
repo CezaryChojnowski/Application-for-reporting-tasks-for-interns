@@ -22,6 +22,8 @@ public class Intern {
     @NotEmpty
     private String school;
     @NotEmpty
+    private String acronym;
+    @NotEmpty
     @Email
     private String email;
     private String password = "test";
@@ -39,15 +41,23 @@ public class Intern {
     public Intern() {
     }
 
-    public Intern(@NotEmpty String firstName, @NotEmpty String surname, @NotEmpty String school, @Email String email, @NotNull Date[] internshipTime, @NotNull @Min(value = 1) @Max(value = 40) int hoursPerWeek) {
+    public Intern(@NotEmpty String firstName, @NotEmpty String surname, @NotEmpty String school, @NotEmpty String acronym, @Email String email, @NotNull Date[] internshipTime, @NotNull @Min(value = 1) @Max(value = 40) int hoursPerWeek) {
         this.firstName = firstName;
         this.surname = surname;
         this.school = school;
         this.email = email;
+        this.acronym=acronym;
         this.internshipTime = internshipTime;
         this.hoursPerWeek = hoursPerWeek;
     }
 
+    public String getAcronym() {
+        return acronym;
+    }
+
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
+    }
 
     public String getPassword() {
         return password;
