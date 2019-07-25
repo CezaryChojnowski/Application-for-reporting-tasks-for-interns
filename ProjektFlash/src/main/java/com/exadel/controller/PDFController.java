@@ -3,7 +3,8 @@ package com.exadel.controller;
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
 import com.exadel.service.InternService;
-import com.itextpdf.text.DocumentException;
+import com.exadel.service.PdfService;
+import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,10 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +30,8 @@ public class PDFController {
     @Autowired
     ServletContext servletContext;
 
+    @Autowired
+    PdfService pdfService;
 
     @GetMapping("/createPdf/{email}/{startDate}/{finishDate}")
     @PreAuthorize("#email == authentication.principal.username or hasAuthority('admin')")
@@ -40,14 +40,13 @@ public class PDFController {
                           @PathVariable("email") String email,
                           @PathVariable(value="startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                           @PathVariable(value="finishDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date finishDate
-    ) throws FileNotFoundException, DocumentException, ParseException {
+    ) throws IOException, DocumentException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Intern intern = internService.findInternByEmail(email);
         List<Task> taskResult = internService.findTasksBeetwenTwoDates(email,startDate,finishDate);
-        boolean isFlag = internService.createPdf(intern, taskResult, servletContext, request, response);
+        boolean isFlag = pdfService.createPdf(intern, taskResult);
         if(isFlag){
-            String fullPath = request.getServletContext().getRealPath("/resources/reports/"+"interns"+".pdf");
-            filedownload(fullPath, response, "interns.pdf");
+            filedownload("interns.pdf", response, "interns.pdf");
         }
     }
 
