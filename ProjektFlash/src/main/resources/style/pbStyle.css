@@ -1,0 +1,44 @@
+h1 {
+    font-size: 42px;
+    padding-bottom: 5px;
+    padding-top: 2px;
+    text-align: center;
+}
+div.pConst{
+    font-size: 21px;
+    padding-bottom: 30px;
+    padding-top: 10px;
+}
+div.signature{
+    font-size: 19px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+table, th, td{
+    font-size: 19px;
+    border: 1px solid black;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    table-layout: fixed;
+    word-wrap:break-word;
+}
+table{
+    border-collapse: collapse;
+    align: center;
+}
+@media print {
+    h6 {page-break-after: always;}
+}
+div.lastSignature{
+    float: left;
+    width: 33%;
+    border: 1px black;
+    text-align: center;
+}
+img{
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-bottom: 3px;
+}
