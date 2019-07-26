@@ -37,6 +37,7 @@ public class Intern {
     private int hoursPerWeek;
     private int totalHoursPerWeek;
     private List<Task> tasks;
+    private String resetToken;
 
     public Intern() {
     }
@@ -49,6 +50,14 @@ public class Intern {
         this.acronym=acronym;
         this.internshipTime = internshipTime;
         this.hoursPerWeek = hoursPerWeek;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
     }
 
     public String getAcronym() {
