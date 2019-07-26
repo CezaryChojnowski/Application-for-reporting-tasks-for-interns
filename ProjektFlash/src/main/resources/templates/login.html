@@ -9,6 +9,11 @@
 </head>
 <body>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <div th:if="${success}">
+         <div class="alert alert-success" role="alert">
+             Password has been changed
+         </div>
+    </div>
 <div align="center">
     <div class="form-group">
         <form style="width: 20%" action="#" th:action="@{/login}" method="post">
