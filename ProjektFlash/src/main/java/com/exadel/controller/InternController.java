@@ -55,9 +55,13 @@ public class InternController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws NullPointerException, ClassCastException{
+    public ModelAndView login(HttpServletRequest request,
+                              HttpServletResponse response,
+                              @RequestParam(required=false, defaultValue = "false") boolean success,
+                              Model model) throws NullPointerException, ClassCastException{
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
+        model.addAttribute("success", success);
         try {
             Cookie[] cookies;
             Cookie tempCookie = new Cookie("temp", "temp");
@@ -449,7 +453,7 @@ public class InternController {
             model.addAttribute("theSame", theSame);
             return new ModelAndView("redirect:/reset?token=" + resetToken, model);
         }
-        modelAndView.setViewName("redirect:login");
-        return modelAndView;
+        model.addAttribute("success", true);
+        return new ModelAndView("redirect:/login", model);
     }
 }
