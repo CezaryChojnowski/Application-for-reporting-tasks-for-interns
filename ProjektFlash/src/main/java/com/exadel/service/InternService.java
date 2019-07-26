@@ -61,6 +61,7 @@ public class InternService {
         intern.setRole("intern");
         intern.setInternshipTime(internshipTime);
         intern.setHoursPerWeek(hoursPerWeek);
+        intern.setResetToken(String.valueOf(UUID.randomUUID()));
         List<Task> emptyTasksList = new ArrayList<Task>();
         intern.setTasks(emptyTasksList);
         intern.setPassword(bCryptPasswordEncode.encode(pass));
