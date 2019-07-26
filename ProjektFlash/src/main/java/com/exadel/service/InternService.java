@@ -91,6 +91,13 @@ public class InternService {
         return internRepository.save(intern);
     }
 
+    public Intern updateResetPassword(String resetToken, String password){
+        Intern intern = internRepository.findInternByToken(resetToken);
+        intern.setPassword(bCryptPasswordEncode.encode(password));
+        intern.setResetToken(String.valueOf(UUID.randomUUID()));
+        return internRepository.save(intern);
+    }
+
     public Intern addTask(String email, Task task){
         Intern intern = findTasksByEmail(email);
         List<Task> tasks = intern.getTasks();
