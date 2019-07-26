@@ -2,11 +2,13 @@ package com.exadel.controller;
 
 import com.exadel.model.Intern;
 import com.exadel.model.Task;
+import com.exadel.repository.EmailRepository;
 import com.exadel.service.InternService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -40,6 +42,12 @@ public class InternController {
 
     @Autowired
     InternService internService;
+
+    @Autowired
+    private EmailRepository emailRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value= "/")
     public ModelAndView home(){
@@ -367,5 +375,81 @@ public class InternController {
         }catch (NullPointerException n){
             return "redirect:/preReport/" + email + "/" + true;
         }
+    }
+
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
+    public String forgotPassword(@RequestParam(name = "doesNotExist" , required=false, defaultValue = "true") boolean doesNotExist,
+                                @RequestParam(name = "success" , required=false, defaultValue = "false") boolean success,
+                                Model model){
+        model.addAttribute("success", success);
+        model.addAttribute("doesNotExist", doesNotExist);
+        return "forgotPassword.html";
+    }
+
+    @RequestMapping(value="/forgotPassword", method = RequestMethod.POST)
+    public ModelAndView resetPassword(@RequestParam String email,
+                                      HttpServletRequest request,
+                                      ModelAndView modelAndView,
+                                      ModelMap model) throws NullPointerException{
+        boolean doesNotExist = true;
+        boolean success = false;
+        try{
+            model.addAttribute("doesNotExist", doesNotExist);
+        Intern intern = internService.findInternByEmail(email);
+        String resetToken = intern.getResetToken();
+        String appUrl = request.getScheme() + "://" + request.getServerName() + ":" +request.getServerPort();
+        SimpleMailMessage passwordResetEmail = new SimpleMailMessage();
+        passwordResetEmail.setTo(intern.getEmail());
+        passwordResetEmail.setSubject("Resetting the Password");
+        passwordResetEmail.setText("To reset your password, click the link below:\n" + appUrl
+                + "/reset?token=" + intern.getResetToken());
+
+        emailRepository.sendEmail(passwordResetEmail);
+        modelAndView.addObject("successMessage", "A password reset link has been sent to " + intern.getEmail());
+        success = true;
+            model.addAttribute("success", success);
+        modelAndView.setViewName("forgotPassword");
+        return modelAndView;
+        }catch (NullPointerException n){
+            doesNotExist = false;
+            model.addAttribute("doesNotExist", doesNotExist);
+            return new ModelAndView("redirect:/forgotPassword", model);
+        }
+    }
+
+    @RequestMapping(value = "/reset", method = RequestMethod.GET)
+    public ModelAndView displayResetPasswordPage(ModelAndView modelAndView,
+                                                 @RequestParam(name = "token")  String token,
+                                                 @RequestParam(name = "theSame" , required=false, defaultValue = "true") boolean theSame,
+                                                 @RequestParam(name = "temp" , required=false, defaultValue = "true") boolean temp,
+                                                 Model model) {
+        Intern intern = internService.findInternByToken(token);
+        if(intern==null){
+            temp = false;
+            model.addAttribute("temp", temp);
+        }
+        model.addAttribute("temp", temp);
+        modelAndView.addObject("resetToken", token);
+        model.addAttribute("theSame", theSame);
+        modelAndView.setViewName("resetPassword");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
+    public ModelAndView setNewPassword(ModelAndView modelAndView,
+                                       @RequestParam String resetToken,
+                                       @RequestParam String password1,
+                                       @RequestParam String password2 ,
+                                       ModelMap model) {
+        boolean theSame = true;
+        if(password1.equals(password2)){
+            internService.updateResetPassword(resetToken, password1);
+        }else{
+            theSame = false;
+            model.addAttribute("theSame", theSame);
+            return new ModelAndView("redirect:/reset?token=" + resetToken, model);
+        }
+        modelAndView.setViewName("redirect:login");
+        return modelAndView;
     }
 }
