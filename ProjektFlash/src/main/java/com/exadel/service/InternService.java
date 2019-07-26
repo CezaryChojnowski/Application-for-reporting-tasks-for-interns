@@ -47,6 +47,10 @@ public class InternService {
         return internRepository.findInternByEmail(email);
     }
 
+    public Intern findInternByToken(String resetToken){
+        return internRepository.findInternByToken(resetToken);
+    }
+
     public List<Task> findTasksByid(ObjectId id){
         return internRepository.findTasksByid(id);
     }
