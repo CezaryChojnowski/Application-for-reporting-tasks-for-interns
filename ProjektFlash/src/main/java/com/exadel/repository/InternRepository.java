@@ -23,6 +23,8 @@ public interface InternRepository extends MongoRepository<Intern, String> {
     @Query(" { 'email': ?0}")
     Intern findInternByEmail(String email);
 
+    @Query(" { 'resetToken': ?0}")
+    Intern findInternByToken(String resetToken);
 
 
 }
